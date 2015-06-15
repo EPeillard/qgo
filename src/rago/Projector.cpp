@@ -2,6 +2,7 @@
 
 using namespace rago;
 
+
 Projector::Projector()
 {
     matDraw = Mat::zeros(768, 1024, CV_8UC3);
@@ -28,7 +29,6 @@ void Projector::draw(int mode, vector<Point> & pts, vector<int> & ids)
     {
         case PROJ_MOD_BOARD:
         {
-            cout << "Board" << endl;
             matDraw = cv::Scalar(255, 255, 255);
             for(int i=0;i<10/1.5-1;i++) //Ce qui nous fait un joli tableau de 9x9
             {

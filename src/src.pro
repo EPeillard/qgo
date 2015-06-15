@@ -46,7 +46,9 @@ FORMS += mainwindow.ui \
 	 network/talk_gui.ui \
     connectionwidget.ui \
     sgfpreview.ui \
-    newgamedialog.ui
+    newgamedialog.ui \
+    rago/ragoconfig.ui \
+    ragowidget.ui
 
 HEADERS += defines.h \
 displayboard.h \
@@ -105,7 +107,9 @@ sgf/sgfparser.h \
     host.h \
     sgfpreview.h \
     game_interfaces/qgoboardlocalinterface.h \
-    newgamedialog.h
+    newgamedialog.h \
+    rago/ragoconfig.h \
+    ragowidget.h
 
 SOURCES += displayboard.cpp \
            listviews.cpp \
@@ -162,7 +166,9 @@ SOURCES += displayboard.cpp \
     host.cpp \
     sgfpreview.cpp \
     game_interfaces/qgoboardlocalinterface.cpp \
-    newgamedialog.cpp
+    newgamedialog.cpp \
+    rago/ragoconfig.cpp \
+    ragowidget.cpp
 
 unix*:!macx-* {
     QGO_INSTALL_PATH = /usr/share/qgo

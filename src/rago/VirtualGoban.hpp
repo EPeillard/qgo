@@ -30,7 +30,7 @@ class VirtualGoban{
 private:
 
     /** Matrix for drawing **/
-    Mat matDraw;
+    cv::Mat matDraw;
     /** Projector object **/
     Projector* proj;
 

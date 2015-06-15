@@ -208,6 +208,7 @@ struct _preferences
  * used in weird places, so we'll make them global */
 extern _preferences preferences;
 extern class ConnectionWidget * connectionWidget;
+extern class RAGoWidget * ragoWidget;
 
 #ifdef Q_OS_WIN
 extern QString applicationPath;

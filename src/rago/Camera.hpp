@@ -26,6 +26,7 @@
 
 #include <stdexcept>
 #include <thread>
+#include <chrono>
 
 using namespace cv;
 using namespace std;

@@ -29,6 +29,7 @@
 struct _preferences preferences;
 MainWindow * mainwindow = 0;
 ConnectionWidget * connectionWidget = 0;
+RAGoWidget * ragoWidget = 0;
 
 QTranslator * translatorPtr;
 

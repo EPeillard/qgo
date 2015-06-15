@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1005</width>
+    <width>948</width>
     <height>750</height>
    </rect>
   </property>
@@ -121,7 +121,7 @@
     <item row="0" column="1">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="ConnectionWidget" name="connectionWidget"/>
       <widget class="QWidget" name="Preferences">
@@ -1058,159 +1058,8 @@ Be careful: it may be annoying if opponent does not want to accept your defaults
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="RAGo">
-       <layout class="QVBoxLayout" name="verticalLayout_7">
-        <item>
-         <widget class="QCheckBox" name="checkBox">
-          <property name="text">
-           <string>Activer RAGo</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QFrame" name="verticalFrame">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_8">
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_3">
-             <item>
-              <spacer name="horizontalSpacer_2">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton">
-               <property name="text">
-                <string>Configurer</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="horizontalSpacer_3">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QGridLayout" name="gridLayout_3">
-             <item row="1" column="0">
-              <spacer name="horizontalSpacer_6">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item row="0" column="1">
-              <spacer name="verticalSpacer_2">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item row="1" column="2">
-              <spacer name="horizontalSpacer_5">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item row="2" column="1">
-              <spacer name="verticalSpacer_4">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item row="1" column="1">
-              <widget class="QWidget" name="widget" native="true"/>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_4">
-             <item>
-              <spacer name="horizontalSpacer_4">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_3">
-               <property name="text">
-                <string>Cette configuration est-elle correcte ?</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_2">
-               <property name="text">
-                <string>Oui</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_3">
-               <property name="text">
-                <string>Non</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </widget>
-        </item>
-       </layout>
+      <widget class="RAGoWidget" name="RAGo">
+       <layout class="QVBoxLayout" name="verticalLayout_7"/>
       </widget>
      </widget>
     </item>
@@ -1322,6 +1171,12 @@ Be careful: it may be annoying if opponent does not want to accept your defaults
    <header location="global">connectionwidget.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>RAGoWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">ragowidget.h</header>
+   <container>1</container>
+  </customwidget>
  </customwidgets>
  <resources>
   <include location="application.qrc"/>
@@ -1356,22 +1211,6 @@ Be careful: it may be annoying if opponent does not want to accept your defaults
     <hint type="destinationlabel">
      <x>512</x>
      <y>378</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>verticalFrame</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>141</x>
-     <y>71</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>134</x>
-     <y>92</y>
     </hint>
    </hints>
   </connection>

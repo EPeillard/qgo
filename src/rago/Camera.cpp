@@ -11,7 +11,7 @@ Camera::Camera()
     {
         id++;
         capture = VideoCapture(id);
-        if(id<15) {id=0; nbTests++;}
+        if(id>15) {id=-1; nbTests++;}
         if(nbTests>5) throw runtime_error("No camera found");
     }
     refreshing=true;
@@ -24,18 +24,23 @@ void Camera::refreshFrame()
     while(refreshing)
     {
         capture >> frame;
-        waitKey(50);
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 }
 
 Camera::~Camera()
 {
+    refreshing=false;
+    refresh.join();
     capture.release();
 }
 
 void Camera::nextCam()
 {
+    refreshing=false;
+    refresh.join();
     capture.release();
+    
     id++;
     nbTests=0;
     capture = VideoCapture(id);
@@ -43,9 +48,13 @@ void Camera::nextCam()
     {
         id++;
         capture = VideoCapture(id);
-        if(id<15) {id=0; nbTests++;}
+        if(id>15) {id=-1; nbTests++;}
         if(nbTests>5) throw runtime_error("No camera found");
     }
+    
+    refreshing=true;
+    capture>>frame;
+    refresh = thread(&Camera::refreshFrame, this);
 }
 
 Mat Camera::getFrame()

@@ -183,14 +183,7 @@ void Core::genConvMat()
 void Core::init()
 {
     //TODO checkez les modes sans initialisation
-
-    ///Drawing a white image on the goban to improve the detection of the corners
-    proj->draw(PROJ_MOD_1 , PROJECTOR_WIDTH, PROJECTOR_HEIGHT);
-    waitKey(10);
-
-    ///Waiting the conformation of the user to let time to place the window in case of only corner detection
-    cout<<"Please, put the white window in the projector screen, in fullscreen mode"<<endl<<endl<<"Press a key when it's done"<<endl;
-
+/*
     int key=0;
     while(key<=0)
     {
@@ -202,7 +195,7 @@ void Core::init()
             key=0;
     	}
     }
-
+*/
 
 #ifndef COMP_MOD_NO_INIT
     vector<Point2f*> list_temp;
@@ -293,7 +286,7 @@ void Core::init()
 			}
 
 			///Erode after the dilating step
-			//erode(lines_tmp2,lines_tmp2,kernel);
+			erode(lines_tmp2,lines_tmp2,kernel);
 
 			if(u==0)
 				m_lines=lines_tmp2;
@@ -372,31 +365,7 @@ void Core::init()
         imshow(WINDOW_CAMERA,display);
         waitKey(20);
 
-        ///If there the right number of points
-        if(list_temp.size()==4)
-        {
-            string s="";
-            ///Ask for the confirmation from the user
-            while(s[0]!='n' && s[0]!='o')
-            {
-                cout<<"Are corners detected good? (o/n)";
-                cin>>s;
-            }
-            if(s[0]=='n')
-                while(list_temp.size()!=0){list_temp.pop_back();}
-        }
     }
-#ifdef COMP_MOD_VERBOSE
-    verbose = src;
-    for(int i=0; i<list_temp.size(); i++)
-    {
-        cout<<"x:"<<list_temp[i]->x<<"  y:"<<list_temp[i]->y<<endl;
-        circle( verbose, *list_temp[i], 3, Scalar(0,255,0), -1, 8, 0 );
-    }
-    imshow(WINDOW_VERBOSE, verbose);
-    cout<<"Press any key to continue"<<endl;
-    waitKey(0);
-#endif // COMP_MOD_VERBOSE
 
     ///Save the corners
     list_corner_markers=list_temp;
@@ -876,7 +845,7 @@ void Core::mergeRelatedLines(vector<lineGrp> *groups, Mat &img)
     			if(*l1==*l2) continue;
     			if((*l2)[0]==0 && (*l2)[1]==-100) continue;
 
-    			if(abs((*l1)[0]-(*l2)[0])<(float)(img.size().width)/100)
+    			if(abs((*l1)[0]-(*l2)[0])<(float)(img.size().width)/70)
     			{
 					(*l1)[0]=((*l1)[0]+(*l2)[0])/2;
 
@@ -931,6 +900,7 @@ bool Core::findAndCleanGoban(vector<lineGrp>::iterator g1, vector<lineGrp>::iter
 	}
 	(*g2).lines=correctLine;
 
+	//Too strict atm TODO !:
     if((*g1).lines.size()!=9 && (*g1).lines.size()!=13 && (*g1).lines.size()!=19) return false;
     if((*g2).lines.size()!=9 && (*g2).lines.size()!=13 && (*g2).lines.size()!=19) return false;
     if((*g1).lines.size()!=(*g2).lines.size()) return false;
