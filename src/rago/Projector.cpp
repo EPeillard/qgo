@@ -30,17 +30,18 @@ void Projector::draw(int mode, vector<Point> & pts, vector<int> & ids)
         case PROJ_MOD_BOARD:
         {
             matDraw = cv::Scalar(255, 255, 255);
-            for(int i=0;i<10/1.5-1;i++) //Ce qui nous fait un joli tableau de 9x9
+	    float tabSize = 10.0;
+            for(int i=0;i<tabSize/1.5-1;i++) //Ce qui nous fait un joli tableau de 9x9
             {
-                for(int j=0;j<10/1.5-1;j++)
+                for(int j=0;j<tabSize/1.5-1;j++)
                 {
                     int nMark = rand()%1000;
                     newIds.push_back(nMark);
-                    Mat marker=FiducidalMarkers::createMarkerImage(nMark,round(matDraw.size().width/10.0));
+                    Mat marker=FiducidalMarkers::createMarkerImage(nMark,round(matDraw.size().width/tabSize));
                     marker=marker;
                     cvtColor(marker,marker,CV_GRAY2RGB);
-                    Rect roi(Point((i+0.5)*matDraw.size().width/10*1.5,(j+0.5)*matDraw.size().height/10*1.5),marker.size());
-                    newPts.push_back(Point((i+0.5)*matDraw.size().width/10*1.5+matDraw.size().width/20.0,(j+0.5)*matDraw.size().height/10*1.5+matDraw.size().width/20.0));
+                    Rect roi(Point((i+0.5)*matDraw.size().width/tabSize*1.5,(j+0.5)*matDraw.size().height/tabSize*1.5),marker.size());
+                    newPts.push_back(Point((i+0.5)*matDraw.size().width/tabSize*1.5+matDraw.size().width/tabSize/2.0,(j+0.5)*matDraw.size().height/tabSize*1.5+matDraw.size().width/tabSize/2.0));
                     marker.copyTo(matDraw(roi));
                 }
             }

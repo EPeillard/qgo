@@ -1058,9 +1058,7 @@ Be careful: it may be annoying if opponent does not want to accept your defaults
         </item>
        </layout>
       </widget>
-      <widget class="RAGoWidget" name="RAGo">
-       <layout class="QVBoxLayout" name="verticalLayout_7"/>
-      </widget>
+      <widget class="RAGoWidget" name="RAGo"/>
      </widget>
     </item>
    </layout>

@@ -165,8 +165,15 @@ public:
       * This Mat represent the picture take before human player move for comparaison. Should be private
     **/
     Mat beginningTurn; //TODO private
+    
+    
+    vector<Point2f*> getList_corner_markers();
+    
+    int getGobanSize();
 
 private:
+    int gobanSize;
+  
     /**	\fn vector<lineGrp> grpLines(vector<Vec2f>)
      * 	\brief Sort lines in group according to their global orientation
      * 	This function sort all the input lines in a vector of lineGrp (struct).

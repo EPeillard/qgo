@@ -39,7 +39,7 @@
      <item>
       <widget class="QLabel" name="errorLabel">
        <property name="text">
-        <string>                                                              </string>
+        <string/>
        </property>
        <property name="textFormat">
         <enum>Qt::AutoText</enum>
@@ -139,7 +139,7 @@
          </spacer>
         </item>
         <item row="1" column="1">
-         <widget class="QLabel" name="label_2">
+         <widget class="QLabel" name="labelFrame">
           <property name="text">
            <string/>
           </property>
@@ -148,42 +148,44 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <spacer name="horizontalSpacer_4">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Cette configuration est-elle correcte ?</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_2">
-          <property name="text">
-           <string>Oui</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_3">
-          <property name="text">
-           <string>Non</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="QWidget" name="checkConfig" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <spacer name="horizontalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Cette configuration est-elle correcte ?</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonCalibY">
+           <property name="text">
+            <string>Oui</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonCalibN">
+           <property name="text">
+            <string>Non</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </item>
      </layout>
     </widget>

@@ -204,7 +204,6 @@ void Core::init()
     while(list_temp.size()!=CORNER_NUMBER)
     {
     	Mat kernel = (Mat_<uchar>(3,3) << 0,1,0,1,1,1,0,1,0);
-    	display = Mat(camera->getFrame());
 
         int nbMean=1;
 		for(int u=0;u<nbMean;u++)
@@ -333,11 +332,6 @@ void Core::init()
 			{
 				///Search for extrema and print them
 				list_temp = findExtrema((*grp1),(*grp2));
-
-				for(int i=0;i<4;i++)
-				{
-					circle(display,(*list_temp[i]),5,Scalar(0,0,128),-1,8);
-				}
 			}
 
 			for(int i=0;i<(*grp1).lines.size();i++)
@@ -362,7 +356,6 @@ void Core::init()
 		#endif // COMP_MOD_VERBOSE
 
 
-        imshow(WINDOW_CAMERA,display);
         waitKey(20);
 
     }
@@ -845,12 +838,12 @@ void Core::mergeRelatedLines(vector<lineGrp> *groups, Mat &img)
     			if(*l1==*l2) continue;
     			if((*l2)[0]==0 && (*l2)[1]==-100) continue;
 
-    			if(abs((*l1)[0]-(*l2)[0])<(float)(img.size().width)/70)
+    			if(abs((*l1)[0]-(*l2)[0])<(float)(img.size().width)/300)
     			{
-					(*l1)[0]=((*l1)[0]+(*l2)[0])/2;
+				(*l1)[0]=((*l1)[0]+(*l2)[0])/2;
 
     				if(abs((*l1)[1]-(*l2)[1])<CV_PI/4)
-						(*l1)[1]=((*l1)[1]+(*l2)[1])/2;
+					(*l1)[1]=((*l1)[1]+(*l2)[1])/2;
     				else {
     					(*l1)[1]=((*l1)[1]+(*l2)[1]-CV_PI)/2;
     					if((*l1)[1]<0)
@@ -901,10 +894,25 @@ bool Core::findAndCleanGoban(vector<lineGrp>::iterator g1, vector<lineGrp>::iter
 	(*g2).lines=correctLine;
 
 	//Too strict atm TODO !:
-    if((*g1).lines.size()!=9 && (*g1).lines.size()!=13 && (*g1).lines.size()!=19) return false;
-    if((*g2).lines.size()!=9 && (*g2).lines.size()!=13 && (*g2).lines.size()!=19) return false;
-    if((*g1).lines.size()!=(*g2).lines.size()) return false;
+	//if((*g1).lines.size()!=9 && (*g1).lines.size()!=13 && (*g1).lines.size()!=19) return false;
+	//if((*g2).lines.size()!=9 && (*g2).lines.size()!=13 && (*g2).lines.size()!=19) return false;
+	//if((*g1).lines.size()!=(*g2).lines.size()) return false;
 
+	if(fmod(((*g1).anglMoy-(*g2).anglMoy),CV_PI)<CV_PI/3 || fmod(((*g1).anglMoy-(*g2).anglMoy),CV_PI)>2.0*CV_PI/3) 
+	{
+	  cout << fmod(((*g1).anglMoy-(*g2).anglMoy),CV_PI) << endl; 
+	  return false;
+	}
+	
+	if((*g1).lines.size()==9 && (*g2).lines.size()==9 ||
+	    (*g1).lines.size()==13 && (*g2).lines.size()==13 ||
+	    (*g1).lines.size()==19 && (*g2).lines.size()==19
+	)
+	  gobanSize=(*g1).lines.size();
+	else
+	  gobanSize=19;
+	    
+    
 	return true;
 }
 
@@ -981,5 +989,15 @@ vector<Point2f*> Core::findExtrema(lineGrp g1,lineGrp g2)
 		}
 	}
 	return extrema;
+}
+
+std::vector< Point2f* > Core::getList_corner_markers()
+{
+  return list_corner_markers;
+}
+
+int Core::getGobanSize()
+{
+  return gobanSize; 
 }
 

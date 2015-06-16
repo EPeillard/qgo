@@ -14,6 +14,10 @@ Camera::Camera()
         if(id>15) {id=-1; nbTests++;}
         if(nbTests>5) throw runtime_error("No camera found");
     }
+        
+    capture.set(CV_CAP_PROP_FRAME_WIDTH,capture.get(CV_CAP_PROP_FRAME_WIDTH)*10);
+    capture.set(CV_CAP_PROP_FRAME_HEIGHT,capture.get(CV_CAP_PROP_FRAME_HEIGHT)*10);
+    
     refreshing=true;
     capture>>frame;
     refresh = thread(&Camera::refreshFrame, this);
@@ -52,8 +56,12 @@ void Camera::nextCam()
         if(nbTests>5) throw runtime_error("No camera found");
     }
     
+    capture.set(CV_CAP_PROP_FRAME_WIDTH,capture.get(CV_CAP_PROP_FRAME_WIDTH)*30);
+    capture.set(CV_CAP_PROP_FRAME_HEIGHT,capture.get(CV_CAP_PROP_FRAME_HEIGHT)*30);
+    
     refreshing=true;
     capture>>frame;
+    
     refresh = thread(&Camera::refreshFrame, this);
 }
 

@@ -13,6 +13,7 @@
 #include <sstream>
 #include <time.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include <string.h>
 
@@ -28,6 +29,8 @@
 #ifndef _CRT_SECURE_NO_WARNINGS
 # define _CRT_SECURE_NO_WARNINGS
 #endif
+
+enum RAGoPhase { disabled, waitCalib, calibCamera, calibCameraEnd, calibProjector, calibProjectorEnd, enabled};
 
 using namespace cv;
 using namespace std;
@@ -48,6 +51,9 @@ public slots:
   void activateRAGo(int);
   void changeCam();
   void startCalib();
+  void updateFrame();
+  void goodCalib();
+  void wrongCalib();
     
 private:
     Ui::RAGoWidget *ui;
@@ -56,6 +62,8 @@ private:
     Camera* camera;
     Goban* goban;
     Core* core;
+    QTimer* timer; 
+    RAGoPhase phase;
 };
 
 #endif // RAGOWIDGET_H

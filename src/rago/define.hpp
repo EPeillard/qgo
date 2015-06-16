@@ -25,8 +25,8 @@
 ///Height of the projector image in pixels
 #define PROJECTOR_WIDTH 1024
 
-///Values used for the detection parameter
-#define GRAY_SCALE 0.4
+///Values used for the detection parameter (has to be a float)
+#define GRAY_SCALE 1.0
 
 ///Projector mod drawing the corners and borders of the goban detected
 #define PROJ_MOD_BORDERS 0

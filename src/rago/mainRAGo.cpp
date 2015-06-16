@@ -66,6 +66,8 @@ int mainRago(int argc, char** argv)
     }
     waitKey(1000);
 
+    //TODO a partir de la
+    
     ///Setting the goban
     goban->setGoban();
 
