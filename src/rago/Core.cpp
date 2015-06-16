@@ -377,7 +377,7 @@ void Core::detection()
     srand (time(NULL));
     marker_points.clear();
 
-    while(marker_points.size()<10)
+    while(marker_points.size()<5)
     {
         marker_points.clear();
         int nMark = rand()%1000;
@@ -898,7 +898,7 @@ bool Core::findAndCleanGoban(vector<lineGrp>::iterator g1, vector<lineGrp>::iter
 	//if((*g2).lines.size()!=9 && (*g2).lines.size()!=13 && (*g2).lines.size()!=19) return false;
 	//if((*g1).lines.size()!=(*g2).lines.size()) return false;
 
-	if(fmod(((*g1).anglMoy-(*g2).anglMoy),CV_PI)<CV_PI/3 || fmod(((*g1).anglMoy-(*g2).anglMoy),CV_PI)>2.0*CV_PI/3) 
+	if(abs(fmod(((*g1).anglMoy-(*g2).anglMoy),CV_PI))<CV_PI/3 || abs(fmod(((*g1).anglMoy-(*g2).anglMoy),CV_PI))>2.0*CV_PI/3) 
 	{
 	  cout << fmod(((*g1).anglMoy-(*g2).anglMoy),CV_PI) << endl; 
 	  return false;

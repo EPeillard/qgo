@@ -1,4 +1,5 @@
 #include "Goban.hpp"
+#include <ragowidget.h>
 
 using namespace rago;
 
@@ -14,11 +15,11 @@ Goban::~Goban()
 void Goban::setGoban()
 {
     ///Initialisation of the goban with empty stones
-    for(int i=0; i<19; i++)
+    for(int i=0; i<ragoWidget->getGobanSize(); i++)
     {
         vector<Stone*> vec;
         tab_stone.push_back(vec);
-        for(int j=0; j<19; j++)
+        for(int j=0; j<ragoWidget->getGobanSize(); j++)
         {
             tab_stone[i].push_back(new Stone());
             tab_stone[i][j]->setDraw(i, j, PLAYER_NONE);

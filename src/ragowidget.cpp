@@ -20,6 +20,8 @@ RAGoWidget::RAGoWidget(QWidget *parent) :
     connect(timer, SIGNAL(timeout()), this, SLOT(updateFrame())); 
     connect(ui->buttonCalibY, SIGNAL(pressed()), this, SLOT(goodCalib())); 
     connect(ui->buttonCalibN, SIGNAL(pressed()), this, SLOT(wrongCalib())); 
+    connect(ui->lumSlider, SIGNAL(valueChanged(int)), this, SLOT(changeLum(int)));
+    connect(ui->zoomSlider, SIGNAL(valueChanged(int)), this, SLOT(changeZoom(int)));
     
 }
 
@@ -41,7 +43,7 @@ void RAGoWidget::activateRAGo(int state)
       camera = new Camera();
       goban = new Goban(vg);
       core = new Core(camera, proj, goban);
-      ui->errorLabel->setText("RAGo prêt a être configuré. ");
+      ui->errorLabel->setText("RAGo prêt à être configuré. ");
       ui->label->setText("Placez la fenêtre sur l'écran correspondant au projecteur et la maximiser. \nChoisir la caméra à utiliser. ");
     
       ///Drawing a white image on the goban to improve the detection of the corners
@@ -82,9 +84,9 @@ void RAGoWidget::changeCam()
 
 void RAGoWidget::startCalib()
 {
-  ui->label->setText("Patienter pendant la calibration de la caméra. ");
+  ui->label->setText("Patienter pendant la calibration de la caméra... ");
   phase=calibCamera;
-  ui->beforeCalib->setEnabled(false);
+  //ui->beforeCalib->setEnabled(false);
   
   ui->checkConfig->setEnabled(false);
   core->init();
@@ -118,7 +120,7 @@ void RAGoWidget::goodCalib()
 {
   if(phase==calibCameraEnd)
   {
-    ui->label->setText("Patienter pendant la calibration du projecteur. ");
+    ui->label->setText("Patienter pendant la calibration du projecteur... ");
     phase=calibProjector;
     
     ui->checkConfig->setEnabled(false);
@@ -136,7 +138,7 @@ void RAGoWidget::goodCalib()
     phase=enabled;
     ui->checkConfig->setEnabled(false);
     ui->label->setText("La calibration est maintenant terminée. ");
-     ui->errorLabel->setText("RAGo est configuré. ");
+    ui->errorLabel->setText("RAGo est configuré. ");
     
     vg->removeBorders();
   }
@@ -146,7 +148,7 @@ void RAGoWidget::wrongCalib()
 {
   if(phase==calibCameraEnd)
   {
-    ui->label->setText("Patienter pendant la calibration de la caméra. ");
+    ui->label->setText("Patienter pendant la calibration de la caméra... ");
     phase=calibCamera;
     ui->checkConfig->setEnabled(false);
     core->init();
@@ -157,7 +159,7 @@ void RAGoWidget::wrongCalib()
   }
   else if(phase==calibProjectorEnd)
   {
-    ui->label->setText("Patienter pendant la calibration du projecteur. ");
+    ui->label->setText("Patienter pendant la calibration du projecteur... ");
     phase=calibProjector;
     ui->checkConfig->setEnabled(false);
     vg->removeBorders();
@@ -169,5 +171,43 @@ void RAGoWidget::wrongCalib()
     phase=calibProjectorEnd;
     ui->label->setText("La calibration est correcte si le cadre est projeté correctement sur le goban. ");
   }
+}
+
+void RAGoWidget::changeLum(int newLum)
+{
+  lum=newLum/100.0;
+  ui->lumLabel->setNum(lum);
+  
+  if(phase == waitCalib || calibCamera || calibCameraEnd)
+  {
+    proj->draw(PROJ_MOD_1 , PROJECTOR_WIDTH, PROJECTOR_HEIGHT);
+    waitKey(10);
+  }
+  if(phase==calibProjectorEnd||phase==enabled)
+  {
+    vg->draw();
+    waitKey(10);
+  }
+}
+
+void RAGoWidget::changeZoom(int newZoom)
+{
+  zoom=newZoom/10.0;
+  ui->zoomLabel->setNum(zoom);
+}
+
+float RAGoWidget::getLum()
+{
+  return lum; 
+}
+
+float RAGoWidget::getZoom()
+{
+  return zoom; 
+}
+
+int RAGoWidget::getGobanSize()
+{
+  return core->getGobanSize();
 }
 

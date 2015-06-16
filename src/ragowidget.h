@@ -1,13 +1,15 @@
 #ifndef RAGOWIDGET_H
 #define RAGOWIDGET_H
 
+#include "define.hpp"
+
+#include "defines.h"
+
 #include "Goban.hpp"
 #include "Core.hpp"
 #include "Network.hpp"
 #include "VirtualGoban.hpp"
-#include "define.hpp"
-
-#include "defines.h"
+#include "Projector.hpp"
 
 #include <iostream>
 #include <sstream>
@@ -46,6 +48,9 @@ class RAGoWidget : public QWidget
 public:
     explicit RAGoWidget(QWidget *parent = 0);
     ~RAGoWidget();
+    float getZoom();
+    float getLum();
+    int getGobanSize();
 
 public slots:
   void activateRAGo(int);
@@ -54,6 +59,8 @@ public slots:
   void updateFrame();
   void goodCalib();
   void wrongCalib();
+  void changeLum(int);
+  void changeZoom(int);
     
 private:
     Ui::RAGoWidget *ui;
@@ -64,6 +71,8 @@ private:
     Core* core;
     QTimer* timer; 
     RAGoPhase phase;
+    float zoom=1.0;
+    float lum=1.0;
 };
 
 #endif // RAGOWIDGET_H

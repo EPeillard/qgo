@@ -26,6 +26,8 @@
 //RAGo includes
 #include "define.hpp"
 
+#include <defines.h>
+
 using namespace cv;
 using namespace std;
 using namespace aruco;

@@ -1,4 +1,5 @@
 #include "Projector.hpp"
+#include <ragowidget.h>
 
 using namespace rago;
 
@@ -45,7 +46,7 @@ void Projector::draw(int mode, vector<Point> & pts, vector<int> & ids)
                     marker.copyTo(matDraw(roi));
                 }
             }
-            matDraw*=GRAY_SCALE;
+            matDraw*=ragoWidget->getLum();
             break;
         }
     }
@@ -61,7 +62,7 @@ void Projector::draw(int mode, int x, int y, int i)
     switch(mode)
     {
         case PROJ_MOD_1:
-            matDraw = GRAY_SCALE*cv::Scalar(255, 255, 255);
+            matDraw = cv::Scalar(ragoWidget->getLum()*255, ragoWidget->getLum()*255, ragoWidget->getLum()*255);
             break;
         case PROJ_MOD_DETECTION: /// display detection points
             matDraw = cv::Scalar(0, 0, 0);

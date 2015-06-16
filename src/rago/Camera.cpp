@@ -1,4 +1,6 @@
 #include "Camera.hpp"
+#include <defines.h>
+#include <ragowidget.h>
 
 using namespace rago;
 
@@ -15,8 +17,8 @@ Camera::Camera()
         if(nbTests>5) throw runtime_error("No camera found");
     }
         
-    capture.set(CV_CAP_PROP_FRAME_WIDTH,capture.get(CV_CAP_PROP_FRAME_WIDTH)*10);
-    capture.set(CV_CAP_PROP_FRAME_HEIGHT,capture.get(CV_CAP_PROP_FRAME_HEIGHT)*10);
+    //capture.set(CV_CAP_PROP_FRAME_WIDTH,capture.get(CV_CAP_PROP_FRAME_WIDTH)*10);
+    //capture.set(CV_CAP_PROP_FRAME_HEIGHT,capture.get(CV_CAP_PROP_FRAME_HEIGHT)*10);
     
     refreshing=true;
     capture>>frame;
@@ -25,9 +27,14 @@ Camera::Camera()
 
 void Camera::refreshFrame()
 {
+    Mat temp;
     while(refreshing)
     {
-        capture >> frame;
+        capture >> temp;
+	Rect roi(temp.cols*(1.0-1.0/ragoWidget->getZoom())/2.0,temp.rows*(1.0-1.0/ragoWidget->getZoom())/2.0,temp.cols/ragoWidget->getZoom(),temp.rows/ragoWidget->getZoom());
+	temp=temp(roi);
+	resize(temp, temp, Size(temp.cols*ragoWidget->getZoom(), temp.rows*ragoWidget->getZoom())); 
+	frame=temp;
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 }
@@ -56,8 +63,8 @@ void Camera::nextCam()
         if(nbTests>5) throw runtime_error("No camera found");
     }
     
-    capture.set(CV_CAP_PROP_FRAME_WIDTH,capture.get(CV_CAP_PROP_FRAME_WIDTH)*30);
-    capture.set(CV_CAP_PROP_FRAME_HEIGHT,capture.get(CV_CAP_PROP_FRAME_HEIGHT)*30);
+    //capture.set(CV_CAP_PROP_FRAME_WIDTH,capture.get(CV_CAP_PROP_FRAME_WIDTH)*30);
+    //capture.set(CV_CAP_PROP_FRAME_HEIGHT,capture.get(CV_CAP_PROP_FRAME_HEIGHT)*30);
     
     refreshing=true;
     capture>>frame;

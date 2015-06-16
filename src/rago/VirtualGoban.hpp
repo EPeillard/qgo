@@ -12,8 +12,8 @@
 #ifndef VIRTUALGOBAN_HPP
 #define VIRTUALGOBAN_HPP
 
-#include "Projector.hpp"
 #include "define.hpp"
+#include "Projector.hpp"
 
 namespace rago{
 
