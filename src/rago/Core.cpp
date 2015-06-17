@@ -635,8 +635,8 @@ int* Core::imagediff(int player)
         //cout<<x<<endl;
         //cout<<y<<endl;
         ///Play the stone in the Goban object
-        goban->play(player, x, y);
-        waitKey(10);
+        //goban->play(player, x, y);
+        //waitKey(10);
 
         ///Return the center point
         int ret[2] = {x, y};

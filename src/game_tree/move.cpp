@@ -342,6 +342,7 @@ Move *Move::makeMove(StoneColor c, int x, int y, bool force)
     if(ragoWidget->getPhase()==enabled)
     {
       ragoWidget->makeMove(c, x, y);
+      ragoWidget->resetReferenceFrame();
     }
     
     if (force || checkMoveIsValid(c, x, y))

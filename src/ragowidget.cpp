@@ -1,5 +1,6 @@
 #include "ragowidget.h"
 #include "ui_ragowidget.h"
+#include <qgoboard.h>
 
 RAGoWidget::RAGoWidget(QWidget *parent) :
     QWidget(parent),
@@ -9,15 +10,17 @@ RAGoWidget::RAGoWidget(QWidget *parent) :
     
     ragoWidget=this;
     
-      phase=disabled; 
+    phase=disabled; 
     
     timer=new QTimer(this);
     timer->start(100); 
     
+    connect(timer, SIGNAL(timeout()), this, SLOT(updateFrame())); 
+    connect(timer, SIGNAL(timeout()), this, SLOT(searchNewMove()));
+    
     connect(ui->checkBox,SIGNAL(stateChanged(int)),this,SLOT(activateRAGo(int)));
     connect(ui->changeCam,SIGNAL(pressed()),this,SLOT(changeCam()));
     connect(ui->buttonCalib,SIGNAL(pressed()),this,SLOT(startCalib()));
-    connect(timer, SIGNAL(timeout()), this, SLOT(updateFrame())); 
     connect(ui->buttonCalibY, SIGNAL(pressed()), this, SLOT(goodCalib())); 
     connect(ui->buttonCalibN, SIGNAL(pressed()), this, SLOT(wrongCalib())); 
     connect(ui->lumSlider, SIGNAL(valueChanged(int)), this, SLOT(changeLum(int)));
@@ -242,7 +245,51 @@ void RAGoWidget::makeMove(StoneColor c, int x, int y)
 
 void RAGoWidget::initGoban()
 {
- goban->setGoban();
+  goban->setGoban();
+  resetReferenceFrame();
+}
+
+void RAGoWidget::resetReferenceFrame()
+{
+  waitKey(200);
+  core->generateBeginningTurnMat();
+}
+
+//Called every 100ms
+void RAGoWidget::searchNewMove()
+{
+  if(phase==enabled && attachedBoard)
+  {
+    int* result;
+    int player;
+    if(attachedBoard->getBlackTurn())
+      player=1;
+    else
+      player=0;
+    
+    result = core->imagediff(player);
+    
+    if(precMove.first==result[0] && precMove.second==result[1]
+      && precMove.first>=1 && precMove.second>=1
+      && precMove.first<=getGobanSize() && precMove.second<=getGobanSize())
+    {
+      count++;
+    }
+    else
+    {
+      precMove.first=result[0];
+      precMove.second=result[1];
+      count=0;
+    }
+    
+    if(count>=20)
+      emit playMove(player, precMove.first, precMove.second);
+  }
+}
+
+void RAGoWidget::attachBoard(qGoBoard* b)
+{
+  attachedBoard=b;
 }
 
 

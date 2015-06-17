@@ -19,7 +19,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
+#include <ragowidget.h>
 #include "qgoboard.h"
 #include "boardwindow.h"
 #include "tree.h"
@@ -32,7 +32,6 @@
 #include "clockdisplay.h"
 #include "gamedata.h"
 #include "matrix.h"
-#include <ragowidget.h>
 
 qGoBoard::qGoBoard(BoardWindow *bw, Tree * t, GameData *gd) : QObject(bw)
 {
@@ -52,8 +51,27 @@ qGoBoard::qGoBoard(BoardWindow *bw, Tree * t, GameData *gd) : QObject(bw)
 	lastSound = QTime(0,0,0);
 	
 	if(ragoWidget->getPhase()==enabled)
+	{
 	  ragoWidget->initGoban();
+	  ragoWidget->attachBoard(this);
+	}
+	
+	connect(ragoWidget,SIGNAL(playMove(int,int,int)),this,SLOT(slotRAGoMoveRequest(int,int,int)));
+	
 }
+
+void qGoBoard::slotRAGoMoveRequest(int c, int x, int y)
+{
+  StoneColor color;
+  if(c==0)
+    color=stoneWhite;
+  else
+    color=stoneBlack;
+  
+  localMoveRequest(color, x, y);
+}
+
+
 
 /* FIXME: Make sure this isn't called from places it shouldn't be. Like
  * subclass interfaces.  */

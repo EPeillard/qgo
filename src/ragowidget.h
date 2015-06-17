@@ -32,6 +32,8 @@
 # define _CRT_SECURE_NO_WARNINGS
 #endif
 
+class qGoBoard;
+
 enum RAGoPhase { disabled, waitCalib, calibCamera, calibCameraEnd, calibProjector, calibProjectorEnd, enabled};
 
 using namespace cv;
@@ -54,6 +56,7 @@ public:
     RAGoPhase getPhase();
     void makeMove(StoneColor,int,int);
     void initGoban();
+    void attachBoard(qGoBoard*);
 
 public slots:
   void activateRAGo(int);
@@ -64,6 +67,8 @@ public slots:
   void wrongCalib();
   void changeLum(int);
   void changeZoom(int);
+  void searchNewMove();
+  void resetReferenceFrame();
     
 private:
     Ui::RAGoWidget *ui;
@@ -76,6 +81,13 @@ private:
     RAGoPhase phase;
     float zoom=1.0;
     float lum=1.0;
+    int count=0;
+    qGoBoard* attachedBoard;
+    pair<int,int> precMove;
+    
+signals:
+  void playMove(int color, int x, int y);
+
 };
 
 #endif // RAGOWIDGET_H

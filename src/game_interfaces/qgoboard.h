@@ -161,7 +161,8 @@ signals:
 	void signal_2passes(const QString&, const QString&);
 */
 public slots:
-
+	//RAGO
+  void slotRAGoMoveRequest(int, int, int);
 
 	// Board
 	virtual void slotBoardClicked(bool, int, int , Qt::MouseButton );
