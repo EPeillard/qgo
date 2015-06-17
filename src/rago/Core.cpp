@@ -119,13 +119,13 @@ void Core::genConvMat()
     vector<Point2f> markersCamera;
     /// Setting Projector coordinate of markers
     vector<Point2f> markersProj;
-    cout<<marker_points.size() << endl;
+    //cout<<marker_points.size() << endl;
     for(int i=0;i<marker_points.size();i++)
     {
     	markersCamera.push_back(marker_points[i].first);
     	markersProj.push_back(marker_points[i].second);
 
-    	cout << marker_points[i].first << ";" << marker_points[i].second<< endl;
+    	//cout << marker_points[i].first << ";" << marker_points[i].second<< endl;
     }
 
     vector<Point2f> temp_vect(4);
@@ -141,16 +141,16 @@ void Core::genConvMat()
     perspectiveTransform(temp_vect,temp_vect,C2G);
     findHomography(temp_vect,markersProj).convertTo(G2P,CV_32F);
 
-    cout << "Test G2P" << endl;
+    //cout << "Test G2P" << endl;
     temp_vect[0]=Point2f(0,0);
     temp_vect[1]=Point2f(9,9);
     temp_vect[2]=Point2f(13,13);
     temp_vect[3]=Point2f(19,19);
     perspectiveTransform(temp_vect,temp_vect,G2P);
-    cout << temp_vect[0] << endl;
-    cout << temp_vect[1] << endl;
-    cout << temp_vect[2] << endl;
-    cout << temp_vect[3] << endl;
+    //cout << temp_vect[0] << endl;
+    //cout << temp_vect[1] << endl;
+    //cout << temp_vect[2] << endl;
+    //cout << temp_vect[3] << endl;
 
     perspectiveTransform(cornersVirtualGoban,temp_vect,VG2C);
     perspectiveTransform(temp_vect,temp_vect,C2G);
@@ -170,14 +170,14 @@ void Core::genConvMat()
     for(int i=0;i<temp_vect.size();i++)
     {
     	list_corner_detected.push_back(new Point2f(temp_vect[i]));
-    	//cout << temp_vect[i] << endl;
+    	////cout << temp_vect[i] << endl;
     }
 
-    cout << C2G << endl;
-    cout << P2C << endl;
-    cout << VG2C << endl;
-    cout << G2P << endl;
-    cout << VG2P << endl;
+    //cout << C2G << endl;
+    //cout << P2C << endl;
+    //cout << VG2C << endl;
+    //cout << G2P << endl;
+    //cout << VG2P << endl;
 }
 
 void Core::init()
@@ -399,19 +399,19 @@ void Core::detection()
 
         myDetector.detect(src,markers);
 
-        cout << "Taille : " << markerIds.size() << endl;
+        //cout << "Taille : " << markerIds.size() << endl;
 
         for (unsigned int i=0;i<markers.size();i++){
-            cout << "Trouvé : " << markers[i].id << endl;
+            //cout << "Trouvé : " << markers[i].id << endl;
             for(unsigned int j=0;j<markerIds.size();j++)
             {
                 if(markers[i].id==markerIds[j])
                 {
                     pair<Point2f,Point2f> temp;
                     temp.first=markers[i].getCenter();
-                    cout << temp.first << endl;
+                    //cout << temp.first << endl;
                     temp.second=markerPoints[j];
-                    cout << temp.second << endl;
+                    //cout << temp.second << endl;
 
                     marker_points.push_back(temp);
                 }
@@ -580,23 +580,23 @@ int* Core::imagediff(int player)
 
     ///Getting a frame to do the difference
     frame2 = Mat(camera->getFrame());
-    cout<<"comparing"<<endl;
+    //cout<<"comparing"<<endl;
 
     ///Do the difference between the just taken frame and the reference frame
     cv::absdiff(beginningTurn, frame2, frame2);
-    cout<<"bitwise"<<endl;
+    //cout<<"bitwise"<<endl;
     ///Application of the mask
     bitwise_and(frame2, maskDraw2,frame2);
 
     /// Convert it to gray
-    cout<<"Convert it to gray"<<endl;
+    //cout<<"Convert it to gray"<<endl;
     cvtColor( frame2, src_gray, CV_BGR2GRAY );
 
     /// Reduce the noise so we avoid false circle detection
     ///First an erosion
     vector<Vec3f> circles;
     Mat element = getStructuringElement(MORPH_ELLIPSE, Size(5, 5), Point(2, 2));
-    cout<<"erosion"<<endl;
+    //cout<<"erosion"<<endl;
     erode(frame2, frame2, element);
     ///Then increase the contrast
     double alpha = 3;
@@ -604,7 +604,7 @@ int* Core::imagediff(int player)
     frame2.convertTo(frame2, -1, alpha, beta);
 
     ///Get all the circles on the image
-    cout<<"haought"<<endl;
+    //cout<<"haought"<<endl;
     HoughCircles( src_gray, circles, CV_HOUGH_GRADIENT, 1, src_gray.rows/8, 200, 10, 0, src_gray.rows/18 );
 
     /// Draw the circles detected
@@ -632,8 +632,8 @@ int* Core::imagediff(int player)
 
         int x=round(outPts[0].x)+1;
         int y=round(outPts[0].y)+1;
-        cout<<x<<endl;
-        cout<<y<<endl;
+        //cout<<x<<endl;
+        //cout<<y<<endl;
         ///Play the stone in the Goban object
         goban->play(player, x, y);
         waitKey(10);
@@ -644,7 +644,7 @@ int* Core::imagediff(int player)
      }
      else
      {
-        cout<<"no difference"<<endl;
+        //cout<<"no difference"<<endl;
         int ret[2] = {-1, -1};
         return ret;
      }
@@ -662,7 +662,7 @@ vector<Point2f*> Core::getFrameCircles(Mat frame, int width)
     /// Detection of the circles
     vector<Vec3f> circles;
     HoughCircles( src_gray, circles, CV_HOUGH_GRADIENT, 1, src_gray.rows/18, 200, 10, width, src_gray.rows/18 );
-    cout<<"test"<<circles.size()<<endl;
+    //cout<<"test"<<circles.size()<<endl;
 
     Mat frameTemp = frame.clone();
     /// Draw the circles detected
@@ -673,7 +673,7 @@ vector<Point2f*> Core::getFrameCircles(Mat frame, int width)
     }
 
     imshow( "Circle Detection", frameTemp );
-    cout<<"Press any key to continue"<<endl;
+    //cout<<"Press any key to continue"<<endl;
 
     return list_center;
 }
@@ -693,10 +693,10 @@ bool Core::detectHand()
     circle(maskDraw, Point(CLOCK_CENTER_X, CLOCK_CENTER_Y) , CLOCK_SIZE,  Scalar(255, 255, 255), -1);
     cv::warpPerspective(maskDraw, maskDraw2, VG2C, maskDraw2.size());
 
-    cout<<"Hand detection"<<endl;
+    //cout<<"Hand detection"<<endl;
     ///Get a new frame
     Mat frame = Mat(camera->getFrame());
-    cout<<"comparing"<<endl;
+    //cout<<"comparing"<<endl;
     ///Do the difference between the just getted frame and the reference one
     absdiff( beginningTurn,frame, frame2);
     ///Apply the mask
@@ -714,12 +714,12 @@ bool Core::detectHand()
     int n=countNotBlack(src_gray,minGray);
     if (n>minPixel)
     {
-        cout<<"yes there is a hand"<<endl;
+        //cout<<"yes there is a hand"<<endl;
             return true;
     }
     else
     {
-        cout<<"nope sorry"<<endl;
+        //cout<<"nope sorry"<<endl;
         return false;
     }
     waitKey(100);
@@ -740,10 +740,10 @@ bool Core::detectHandParam()
     circle(maskDraw, Point(CLOCK_CENTER_X, CLOCK_CENTER_Y) , CLOCK_SIZE,  Scalar(255, 255, 255), -1);
     cv::warpPerspective(maskDraw, maskDraw2, VG2C, maskDraw2.size());
 
-    cout<<"Parameters detection"<<endl;
+    //cout<<"Parameters detection"<<endl;
     ///Get a new frame
     Mat frame = Mat(camera->getFrame());
-    cout<<"comparing"<<endl;
+    //cout<<"comparing"<<endl;
     ///Do the difference between the just getted frame and the reference one
     absdiff( beginningTurn,frame, frame2);
     ///Apply the mask
@@ -763,7 +763,7 @@ bool Core::detectHandParam()
     }
     minGray=i;
     minPixel=n+10;
-    cout<<endl<<i<<", "<<n<<endl;
+    //cout<<endl<<i<<", "<<n<<endl;
 }
 
 int Core::countNotBlack(Mat img,int lim)
@@ -900,7 +900,7 @@ bool Core::findAndCleanGoban(vector<lineGrp>::iterator g1, vector<lineGrp>::iter
 
 	if(abs(fmod(((*g1).anglMoy-(*g2).anglMoy),CV_PI))<CV_PI/3 || abs(fmod(((*g1).anglMoy-(*g2).anglMoy),CV_PI))>2.0*CV_PI/3) 
 	{
-	  cout << fmod(((*g1).anglMoy-(*g2).anglMoy),CV_PI) << endl; 
+	  //cout << fmod(((*g1).anglMoy-(*g2).anglMoy),CV_PI) << endl; 
 	  return false;
 	}
 	

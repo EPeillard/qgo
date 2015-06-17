@@ -22,19 +22,33 @@ Camera::Camera()
     
     refreshing=true;
     capture>>frame;
-    refresh = thread(&Camera::refreshFrame, this);
+    //refresh = thread(&Camera::refreshFrame, this);
 }
 
 void Camera::refreshFrame()
 {
     Mat temp;
+    float currZoom;
+    
     while(refreshing)
     {
-        capture >> temp;
-	Rect roi(temp.cols*(1.0-1.0/ragoWidget->getZoom())/2.0,temp.rows*(1.0-1.0/ragoWidget->getZoom())/2.0,temp.cols/ragoWidget->getZoom(),temp.rows/ragoWidget->getZoom());
-	temp=temp(roi);
-	resize(temp, temp, Size(temp.cols*ragoWidget->getZoom(), temp.rows*ragoWidget->getZoom())); 
-	frame=temp;
+	try{
+	  capture >> temp;
+	  Size s(temp.cols, temp.rows);
+	  currZoom = ragoWidget->getZoom();
+	  qDebug("** Zoom %f",currZoom);
+	  Rect roi(temp.cols*(1.0-1.0/currZoom)/2.0,temp.rows*(1.0-1.0/currZoom)/2.0,temp.cols/currZoom,temp.rows/currZoom);
+	  temp=temp(roi);
+	  qDebug("** Resize : %i,%i",temp.cols,temp.rows);
+	  resize(temp, temp, s); 
+	  qDebug("** source : %i,%i",s.width,s.height);
+	  qDebug("** temp : %i,%i",temp.cols,temp.rows);
+	  frame=temp;
+	}
+	catch (exception)
+	{
+	  qDebug("** Zoom error");
+	}
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 }
@@ -49,7 +63,7 @@ Camera::~Camera()
 void Camera::nextCam()
 {
     refreshing=false;
-    refresh.join();
+    //refresh.join();
     capture.release();
     
     id++;
@@ -69,12 +83,26 @@ void Camera::nextCam()
     refreshing=true;
     capture>>frame;
     
-    refresh = thread(&Camera::refreshFrame, this);
+    //refresh = thread(&Camera::refreshFrame, this);
 }
 
 Mat Camera::getFrame()
 {
-    return frame;
+    Mat temp;
+    float currZoom;
+    capture >> temp;
+    try{
+	  Size s(temp.cols, temp.rows);
+	  currZoom = ragoWidget->getZoom();
+	  Rect roi(temp.cols*(1.0-1.0/currZoom)/2.0,temp.rows*(1.0-1.0/currZoom)/2.0,temp.cols/currZoom,temp.rows/currZoom);
+	  temp=temp(roi);
+	  resize(temp, temp, s); 
+	}
+	catch (exception)
+	{
+	  qDebug("** Zoom error");
+	}
+  return temp;
 }
 
 void Camera::close()
@@ -98,7 +126,7 @@ void read_camera_params( const char* in_filename,
 
 Mat Camera::correction(IplImage image)
 {
-    cout<<"correction"<<endl;
+    //cout<<"correction"<<endl;
     const char* in_filename = "out_camera_data.yml";
 
     Mat* camera_matrix;
@@ -107,7 +135,7 @@ Mat Camera::correction(IplImage image)
     vector<CvMat> vec_camera_matrix;
     vector<CvMat> vec_dist_coeffs;
 
-    cout<<"reading file"<<endl;
+    //cout<<"reading file"<<endl;
 
     CvFileStorage* fs = cvOpenFileStorage( in_filename, 0, CV_STORAGE_READ );
     camera_matrix = (Mat *) cvRead (fs, cvGetFileNodeByName (fs, NULL, "Camera_Matrix"));
@@ -118,7 +146,7 @@ Mat Camera::correction(IplImage image)
     view.convertTo(view, CV_32F);
     Mat temp = view.clone();
 
-    cout<<"udustortion"<<endl;
+    //cout<<"udustortion"<<endl;
     undistort( temp, view, *camera_matrix, *dist_coeffs );
 
     return view;
@@ -180,17 +208,17 @@ public:
         goodInput = true;
         if (boardSize.width <= 0 || boardSize.height <= 0)
         {
-            cerr << "Invalid Board size: " << boardSize.width << " " << boardSize.height << endl;
+            //cerr << "Invalid Board size: " << boardSize.width << " " << boardSize.height << endl;
             goodInput = false;
         }
         if (squareSize <= 10e-6)
         {
-            cerr << "Invalid square size " << squareSize << endl;
+            //cerr << "Invalid square size " << squareSize << endl;
             goodInput = false;
         }
         if (nrFrames <= 0)
         {
-            cerr << "Invalid number of frames " << nrFrames << endl;
+            //cerr << "Invalid number of frames " << nrFrames << endl;
             goodInput = false;
         }
 
@@ -223,7 +251,7 @@ public:
         }
         if (inputType == INVALID)
         {
-            cerr << " Inexistent input: " << input;
+            //cerr << " Inexistent input: " << input;
             goodInput = false;
         }
 
@@ -239,7 +267,7 @@ public:
         if (!patternToUse.compare("ASYMMETRIC_CIRCLES_GRID")) calibrationPattern = ASYMMETRIC_CIRCLES_GRID;
         if (calibrationPattern == NOT_EXISTING)
             {
-                cerr << " Inexistent camera calibration mode: " << patternToUse << endl;
+                //cerr << " Inexistent camera calibration mode: " << patternToUse << endl;
                 goodInput = false;
             }
         atImageList = 0;
@@ -326,14 +354,14 @@ void Camera::genYML(int argc, char* argv[])
     FileStorage fs(inputSettingsFile, FileStorage::READ); // Read the settings
     if (!fs.isOpened())
     {
-        cout << "Could not open the configuration file: \"" << inputSettingsFile << "\"" << endl;
+        //cout << "Could not open the configuration file: \"" << inputSettingsFile << "\"" << endl;
     }
     fs["Settings"] >> s;
     fs.release();                                         // close Settings file
 
     if (!s.goodInput)
     {
-        cout << "Invalid input detected. Application stopping. " << endl;
+        //cout << "Invalid input detected. Application stopping. " << endl;
     }
 
     vector<vector<Point2f> > imagePoints;
@@ -549,7 +577,7 @@ static bool runCalibration( Settings& s, Size& imageSize, Mat& cameraMatrix, Mat
     double rms = calibrateCamera(objectPoints, imagePoints, imageSize, cameraMatrix,
                                  distCoeffs, rvecs, tvecs, s.flag|CV_CALIB_FIX_K4|CV_CALIB_FIX_K5);
 
-    cout << "Re-projection error reported by calibrateCamera: "<< rms << endl;
+    //cout << "Re-projection error reported by calibrateCamera: "<< rms << endl;
 
     bool ok = checkRange(cameraMatrix) && checkRange(distCoeffs);
 
@@ -646,8 +674,8 @@ bool runCalibrationAndSave(Settings& s, Size imageSize, Mat&  cameraMatrix, Mat&
 
     bool ok = runCalibration(s,imageSize, cameraMatrix, distCoeffs, imagePoints, rvecs, tvecs,
                              reprojErrs, totalAvgErr);
-    cout << (ok ? "Calibration succeeded" : "Calibration failed")
-        << ". avg re projection error = "  << totalAvgErr ;
+    //cout << (ok ? "Calibration succeeded" : "Calibration failed")
+        //<< ". avg re projection error = "  << totalAvgErr ;
 
     if( ok )
         saveCameraParams( s, imageSize, cameraMatrix, distCoeffs, rvecs ,tvecs, reprojErrs,

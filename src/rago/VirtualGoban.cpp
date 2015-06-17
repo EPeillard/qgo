@@ -16,23 +16,23 @@ VirtualGoban::~VirtualGoban(){}
 
 void VirtualGoban::draw()
 {
-    std::cout<<"trying to draw"<<std::endl;
+    //cout<<"trying to draw"<<std::endl;
     proj->draw(&matDraw);
     waitKey(10);
 }
 
 void VirtualGoban::addStone(int color, int x, int y)
 {
-    std::cout<<"addstone "<<color<<std::endl;
+    //cout<<"addstone "<<color<<std::endl;
     if(color == PLAYER_WHITE)
     {
         circle(matDraw, Point(FULL_VG_PADDING+RATIO_G_VG*(x-1), FULL_VG_PADDING+RATIO_G_VG*(y-1)), STONE_SIZE,  Scalar(255, 255, 255), -1);
-        std::cout<<"white"<<std::endl;
+        //cout<<"white"<<std::endl;
     }
     if(color == PLAYER_BLACK)
     {
         circle(matDraw, Point(FULL_VG_PADDING+RATIO_G_VG*(x-1), FULL_VG_PADDING+RATIO_G_VG*(y-1)), STONE_BORDER_SIZE,  Scalar(255, 255, 255), STONE_BORDER_SIZE-STONE_SIZE);
-        std::cout<<"black"<<std::endl;
+        //cout<<"black"<<std::endl;
     }
 
     imshow(WINDOW_VG, matDraw);
@@ -41,7 +41,7 @@ void VirtualGoban::addStone(int color, int x, int y)
 
 void VirtualGoban::remove(int x, int y)
 {
-    std::cout<<"remove "<<std::endl;
+    //cout<<"remove "<<std::endl;
     circle(matDraw, Point(FULL_VG_PADDING+RATIO_G_VG*(x-1), FULL_VG_PADDING+RATIO_G_VG*(y-1)), STONE_SIZE,  Scalar(137, 134, 208), -1);
 
     imshow(WINDOW_VG, matDraw);
@@ -60,13 +60,13 @@ void VirtualGoban::drawBorders()
     line( matDraw, Point(VG_HEIGHT+FULL_VG_PADDING, VG_WIDTH+FULL_VG_PADDING), Point(FULL_VG_PADDING, VG_WIDTH+FULL_VG_PADDING), Scalar(0,0,255), 5);
     line( matDraw, Point(FULL_VG_PADDING, VG_WIDTH+FULL_VG_PADDING), Point(FULL_VG_PADDING, FULL_VG_PADDING), Scalar(0,0,255), 5);
 
-    cout << "matDraw size : " << matDraw.size() << endl;
+    //cout << "matDraw size : " << matDraw.size() << endl;
 
     imwrite("coucou.jpg",matDraw);
 
     imshow(WINDOW_VG, matDraw); //Pour une raison inconnue, cette ligne seg fault parfois
 
-    cout << "Coucou" << endl;
+    //cout << "Coucou" << endl;
 
     draw();
 }

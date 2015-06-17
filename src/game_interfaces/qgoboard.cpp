@@ -32,6 +32,7 @@
 #include "clockdisplay.h"
 #include "gamedata.h"
 #include "matrix.h"
+#include <ragowidget.h>
 
 qGoBoard::qGoBoard(BoardWindow *bw, Tree * t, GameData *gd) : QObject(bw)
 {
@@ -49,6 +50,9 @@ qGoBoard::qGoBoard(BoardWindow *bw, Tree * t, GameData *gd) : QObject(bw)
 
 	dontCheckValidity = false;
 	lastSound = QTime(0,0,0);
+	
+	if(ragoWidget->getPhase()==enabled)
+	  ragoWidget->initGoban();
 }
 
 /* FIXME: Make sure this isn't called from places it shouldn't be. Like
@@ -323,6 +327,7 @@ void qGoBoard::doPass(StoneColor c)
  */
 Move *qGoBoardNetworkInterface::doMove(StoneColor c, int x, int y)
 {
+      qDebug("**  RAGO : %i played %i;%i",c,x,y);
     bool validMove = (dontCheckValidity || tree->getCurrent()->checkMoveIsValid(c, x, y));
     dontCheckValidity = false;
     if (!validMove)

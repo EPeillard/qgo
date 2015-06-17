@@ -23,6 +23,7 @@
 #include "move.h"
 #include "matrix.h"
 #include "group.h"
+#include <ragowidget.h>
 
 Move::Move(int board_size)
 {
@@ -338,6 +339,11 @@ Move *Move::hasSon(StoneColor c, int x, int y)
 
 Move *Move::makeMove(StoneColor c, int x, int y, bool force)
 {
+    if(ragoWidget->getPhase()==enabled)
+    {
+      ragoWidget->makeMove(c, x, y);
+    }
+    
     if (force || checkMoveIsValid(c, x, y))
         return new Move(this, c, x, y);
     else

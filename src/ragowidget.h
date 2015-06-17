@@ -51,6 +51,9 @@ public:
     float getZoom();
     float getLum();
     int getGobanSize();
+    RAGoPhase getPhase();
+    void makeMove(StoneColor,int,int);
+    void initGoban();
 
 public slots:
   void activateRAGo(int);

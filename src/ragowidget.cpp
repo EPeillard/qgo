@@ -86,7 +86,7 @@ void RAGoWidget::startCalib()
 {
   ui->label->setText("Patienter pendant la calibration de la caméra... ");
   phase=calibCamera;
-  //ui->beforeCalib->setEnabled(false);
+  ui->buttonCalib->setEnabled(false);
   
   ui->checkConfig->setEnabled(false);
   core->init();
@@ -120,6 +120,7 @@ void RAGoWidget::goodCalib()
 {
   if(phase==calibCameraEnd)
   {
+    ui->beforeCalib->setEnabled(false);
     ui->label->setText("Patienter pendant la calibration du projecteur... ");
     phase=calibProjector;
     
@@ -127,7 +128,14 @@ void RAGoWidget::goodCalib()
     core->detection();
     core->genConvMat();
     proj->setVG2P(core->getVG2PMat());
-    vg->drawBorders();
+    try{
+      vg->drawBorders(); //Il arrive que l'appli crash ici, en attendant on refait la calibration si ca arrive FIXME
+    }
+    catch(exception)
+    {
+      phase=calibCameraEnd;
+      goodCalib();
+    }
     ui->checkConfig->setEnabled(true);
     
     phase=calibProjectorEnd;
@@ -193,7 +201,8 @@ void RAGoWidget::changeLum(int newLum)
 void RAGoWidget::changeZoom(int newZoom)
 {
   zoom=newZoom/10.0;
-  ui->zoomLabel->setNum(zoom);
+  if(newZoom>=1)
+    ui->zoomLabel->setNum(zoom);
 }
 
 float RAGoWidget::getLum()
@@ -210,4 +219,30 @@ int RAGoWidget::getGobanSize()
 {
   return core->getGobanSize();
 }
+
+RAGoPhase RAGoWidget::getPhase()
+{
+  return phase;
+}
+
+void RAGoWidget::makeMove(StoneColor c, int x, int y)
+{
+  int color;
+  if(c==stoneWhite)
+  {
+      color=PLAYER_WHITE;
+  }
+  else if(c==stoneBlack)
+  {
+      color=PLAYER_BLACK;
+  }
+  
+  goban->play(color, x, y);
+}
+
+void RAGoWidget::initGoban()
+{
+ goban->setGoban();
+}
+
 

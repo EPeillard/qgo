@@ -29,12 +29,12 @@ void Goban::setGoban()
 
 void Goban::playTerminal(int player)
 {
-    cout<<"Enter where you want to play ( X -> Enter -> Y -> Enter) or '0' two times to quit"<<endl<<endl;
+    //cout<<"Enter where you want to play ( X -> Enter -> Y -> Enter) or '0' two times to quit"<<endl<<endl;
     int x, y;
     bool flag = false;
     while(!flag)
     {
-        cout<<"Player "<<player<<endl;
+        //cout<<"Player "<<player<<endl;
         cin>>x;
         cin>>y;
         if(x>=1 && x<=19 && y>=1 && y<=19)
@@ -50,7 +50,7 @@ void Goban::playTerminal(int player)
 
             Network net("127.0.0.1", 5001);
            net.connexion();
-            std::cout<<"request : "<<str<<"result : "<<net.sendRequest(0, str)<<std::endl;
+            //cout<<"request : "<<str<<"result : "<<net.sendRequest(0, str)<<std::endl;
             waitKey(10);
 
         }
