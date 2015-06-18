@@ -2,7 +2,10 @@
 #include <defines.h>
 #include <ragowidget.h>
 
+using namespace cv;
+using namespace std;
 using namespace rago;
+using namespace aruco;
 
 Camera::Camera()
 {
@@ -22,22 +25,21 @@ Camera::Camera()
     
     refreshing=true;
     capture>>frame;
+    s = Size(frame.cols, frame.rows);
     //refresh = thread(&Camera::refreshFrame, this);
 }
 
 void Camera::refreshFrame()
 {
     Mat temp;
-    float currZoom;
     
     while(refreshing)
     {
 	try{
 	  capture >> temp;
 	  Size s(temp.cols, temp.rows);
-	  currZoom = ragoWidget->getZoom();
-	  qDebug("** Zoom %f",currZoom);
-	  Rect roi(temp.cols*(1.0-1.0/currZoom)/2.0,temp.rows*(1.0-1.0/currZoom)/2.0,temp.cols/currZoom,temp.rows/currZoom);
+	  qDebug("** Zoom %f",zoom);
+	  Rect roi(temp.cols*(1.0-1.0/zoom)/2.0,temp.rows*(1.0-1.0/zoom)/2.0,temp.cols/zoom,temp.rows/zoom);
 	  temp=temp(roi);
 	  qDebug("** Resize : %i,%i",temp.cols,temp.rows);
 	  resize(temp, temp, s); 
@@ -82,26 +84,37 @@ void Camera::nextCam()
     
     refreshing=true;
     capture>>frame;
+    s = Size(frame.cols, frame.rows);
     
     //refresh = thread(&Camera::refreshFrame, this);
 }
 
+void Camera::changeZoom(float newZoom)
+{
+  zoom = newZoom;
+  capture.set(CV_CAP_PROP_FRAME_WIDTH,s.width*zoom);
+  capture.set(CV_CAP_PROP_FRAME_HEIGHT,s.height*zoom);
+  
+}
+
+
 Mat Camera::getFrame()
 {
     Mat temp;
-    float currZoom;
     capture >> temp;
     try{
-	  Size s(temp.cols, temp.rows);
-	  currZoom = ragoWidget->getZoom();
-	  Rect roi(temp.cols*(1.0-1.0/currZoom)/2.0,temp.rows*(1.0-1.0/currZoom)/2.0,temp.cols/currZoom,temp.rows/currZoom);
-	  temp=temp(roi);
-	  resize(temp, temp, s); 
-	}
-	catch (exception)
-	{
-	  qDebug("** Zoom error");
-	}
+      if(temp.rows*s.width>=temp.cols*s.height)
+	  resize(temp, temp, Size(s.width*zoom,s.width*zoom*temp.rows/temp.cols));
+      else
+	  resize(temp, temp, Size(s.height*zoom*temp.cols/temp.rows,s.height*zoom));
+      
+      Rect roi((temp.cols-s.width)/2.0,(temp.rows-s.height)/2.0,s.width,s.height);
+      temp=temp(roi);
+    }
+    catch (exception)
+    {
+      qDebug("** Zoom error");
+    }
   return temp;
 }
 

@@ -15,8 +15,6 @@
 //OpenCV icludes
 #include "opencv2/highgui/highgui.hpp"
 
-using namespace cv;
-
 namespace rago{
 
 /** \class  rago::Stone Stone.hpp Stone

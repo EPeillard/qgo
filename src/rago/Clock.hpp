@@ -25,9 +25,6 @@
 //RAGo includes
 #include "VirtualGoban.hpp"
 
-using namespace std;
-using namespace cv;
-
 namespace rago{
 
 class Clock{
@@ -59,7 +56,7 @@ private:
     double myTime;
     clock_t temps;
     string window_name;
-    Mat* mat_draw;
+    cv::Mat* mat_draw;
 
 //Start modification with p
     VirtualGoban* proj;

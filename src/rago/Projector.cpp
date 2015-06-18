@@ -2,6 +2,9 @@
 #include <ragowidget.h>
 
 using namespace rago;
+using namespace aruco;
+using namespace cv;
+using namespace std;
 
 
 Projector::Projector()

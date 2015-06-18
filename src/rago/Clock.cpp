@@ -1,6 +1,8 @@
 #include "Clock.hpp"
 
 using namespace rago;
+using namespace std;
+using namespace cv;
 
 //Start modification with p
 Clock::Clock(VirtualGoban *p)

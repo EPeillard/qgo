@@ -36,9 +36,6 @@ class qGoBoard;
 
 enum RAGoPhase { disabled, waitCalib, calibCamera, calibCameraEnd, calibProjector, calibProjectorEnd, enabled};
 
-using namespace cv;
-using namespace std;
-
 namespace Ui {
 class RAGoWidget;
 }
@@ -72,11 +69,11 @@ public slots:
     
 private:
     Ui::RAGoWidget *ui;
-    Projector* proj;
-    VirtualGoban* vg;
-    Camera* camera;
-    Goban* goban;
-    Core* core;
+    rago::Projector* proj;
+    rago::VirtualGoban* vg;
+    rago::Camera* camera;
+    rago::Goban* goban;
+    rago::Core* core;
     QTimer* timer; 
     RAGoPhase phase;
     float zoom=1.0;

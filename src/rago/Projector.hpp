@@ -28,10 +28,6 @@
 
 #include <defines.h>
 
-using namespace cv;
-using namespace std;
-using namespace aruco;
-
 namespace rago{
 
 /** \class  rago::Projector Projector.hpp Projector
@@ -74,19 +70,19 @@ public:
       * Drawing function. It draw on the projector screen
       * \arg Mat image to draw
       **/
-    void draw(Mat *mat);
+    void draw(cv::Mat *mat);
 
     /** \fn void setVG2P(Mat*)
       * Setter for the VG2P matrix
       * \arg VG2P matrix
       **/
-    void setVG2P(Mat*);
+    void setVG2P(cv::Mat*);
 
-    Mat matDraw; //TODO faire un getter
+    cv::Mat matDraw; //TODO faire un getter
 
 private:
 
-    Mat* VG2P;
+    cv::Mat* VG2P;
 
 };
 

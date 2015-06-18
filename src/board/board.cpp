@@ -36,6 +36,7 @@
 #include "move.h"		//for updateLastMove, cleaner and yet not FIXME
 #include "graphicsitemstypes.h"
 #include "matrix.h"
+#include <ragowidget.h>
 
 #include <QMouseEvent>
 #include <QApplication>
@@ -43,7 +44,6 @@
 #include <QClipboard>
 
 class ImageHandler;
-
 
 /*
  * This initialises everything on the board : background, gatter, cursor, etc ....
@@ -66,7 +66,7 @@ Board::Board(QWidget *parent, QGraphicsScene *c)
 
 	coordType = uninit;
     marks = new QList<Mark*>;
-    stones = new QHash<int,Stone *>();
+    stones = new QHash<int,Stone*>();
     ghosts = new QList<Stone*>;
     lastMoveMark = NULL;
     gatter = NULL;
@@ -524,54 +524,70 @@ void Board::updateStone(StoneColor c, int x, int y, bool dead)
 {
     Stone *stone = stones->value(coordsToKey(x, y),NULL);
     //if ((stone == NULL) & ((c == stoneBlack) || (c == stoneWhite)))
-
-	switch (c)
+	
+    switch (c)
+    {   
+      case stoneBlack:
+      case stoneWhite:
+	if (stone == NULL)
 	{
-	case stoneBlack:
-	case stoneWhite:
-		if (stone == NULL)
-		{
-            stone = new Stone(imageHandler->getStonePixmaps(), canvas, c, x, y,true);
-            stone->setPos(offsetX + square_size * (x - 1) - stone->pixmap().width()/2,
-                offsetY + square_size * (y - 1) - stone->pixmap().height()/2 );
-            stones->insert(coordsToKey(x,y) , stone);
-            break;
-        }
-
-        if (stone->getColor() != c)
-            stone->setColor(c);
-		
-		// We need to check wether the stones have been toggled dead or seki before (scoring mode)
-		if ((stone->isDead() || stone->isSeki()) && !dead)
-		{
-			stone->togglePixmap(imageHandler->getStonePixmaps(), true);
-			stone->setDead(false);
-		}
-		
-		if ((!stone->isDead()) && dead)
-		{
-			stone->togglePixmap(imageHandler->getGhostPixmaps(), false);
-			stone->setDead();
-		}
-
-        if (!stone->isVisible())
-            stone->show();
-
-		break;
-		
-		
-	case stoneNone:
-	case stoneErase:
-		if (stone && stone->isVisible())
-		{
-            stone->hide();
-		}
-		break;
-		
-	default:
-		qWarning("Bad data <%d> at %d/%d in board::updateStone !",
-			c, x, y);
+	  stone = new Stone(imageHandler->getStonePixmaps(), canvas, c, x, y,true);
+	  stone->setPos(offsetX + square_size * (x - 1) - stone->pixmap().width()/2,
+	  offsetY + square_size * (y - 1) - stone->pixmap().height()/2 );
+	  stones->insert(coordsToKey(x,y) , stone);
+	  if(ragoWidget->getPhase()==enabled)
+	    ragoWidget->makeMove(c, x, y);
+	  break;
 	}
+
+	if (stone->getColor() != c)
+	{
+	  stone->setColor(c);
+	  if(ragoWidget->getPhase()==enabled)
+	    ragoWidget->makeMove(c, x, y);
+	}
+	  
+	// We need to check wether the stones have been toggled dead or seki before (scoring mode)
+	if ((stone->isDead() || stone->isSeki()) && !dead)
+	{
+	  stone->togglePixmap(imageHandler->getStonePixmaps(), true);
+	  stone->setDead(false);
+	  if(ragoWidget->getPhase()==enabled)
+	    ragoWidget->makeMove(c, x, y);
+	}
+	
+	if ((!stone->isDead()) && dead)
+	{
+	  stone->togglePixmap(imageHandler->getGhostPixmaps(), false);
+	  stone->setDead();
+	  if(ragoWidget->getPhase()==enabled)
+	    ragoWidget->makeMove(stoneErase, x, y);
+	}
+
+	if (!stone->isVisible())
+	{
+	    stone->show();
+	    if(ragoWidget->getPhase()==enabled)
+	      ragoWidget->makeMove(c, x, y);
+	}
+
+	break;
+	    
+	    
+    case stoneNone:
+    case stoneErase:
+      if (stone && stone->isVisible())
+      {
+	  stone->hide();
+	  if(ragoWidget->getPhase()==enabled)
+	    ragoWidget->makeMove(c, x, y);
+      }
+      break;
+	    
+    default:
+	qWarning("Bad data <%d> at %d/%d in board::updateStone !",
+		  c, x, y);
+    }
 }
 
 /*
@@ -853,7 +869,7 @@ void Board::removeLastMoveMark()
 	StoneColor c = move->getColor();
 	int x = move->getX();
 	int y = move->getY();
-	
+    
 	delete lastMoveMark;
 	lastMoveMark = NULL;
 

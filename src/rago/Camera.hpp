@@ -28,9 +28,6 @@
 #include <thread>
 #include <chrono>
 
-using namespace cv;
-using namespace std;
-
 namespace rago{
 
 /** \class  rago::Camera Camera.hpp Camera
@@ -62,7 +59,7 @@ public:
       * Give back a image just taken from the camera
       *
       **/
-    Mat getFrame();
+    cv::Mat getFrame();
 
     /** \fn close()
       * Close the steam to the camera
@@ -78,13 +75,15 @@ public:
     /** \fn Mat correction(IplImage)
       * Be careful, this function DOESN'T WORK, it normally corrects an image just taken.
     **/
-    Mat correction(IplImage);
+    cv::Mat correction(IplImage);
+    
+    void changeZoom(float newZoom);
 
 private:
 
     /** Camera stream for taking frames
     **/
-    VideoCapture capture;
+    cv::VideoCapture capture;
 
     /** Camera id
     **/
@@ -104,11 +103,15 @@ private:
 
     /** Most recent frame
     **/
-    Mat frame;
+    cv::Mat frame;
 
     bool refreshing;
 
-    thread refresh;
+    std::thread refresh;
+    
+    cv::Size s;
+    
+    float zoom=1.0;
 };
 
 }

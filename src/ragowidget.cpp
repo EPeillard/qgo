@@ -2,6 +2,10 @@
 #include "ui_ragowidget.h"
 #include <qgoboard.h>
 
+using namespace cv;
+using namespace std;
+using namespace rago;
+
 RAGoWidget::RAGoWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::RAGoWidget)
@@ -203,19 +207,16 @@ void RAGoWidget::changeLum(int newLum)
 
 void RAGoWidget::changeZoom(int newZoom)
 {
-  zoom=newZoom/10.0;
-  if(newZoom>=1)
-    ui->zoomLabel->setNum(zoom);
+  if(newZoom/10.0>=1)
+  {
+    ui->zoomLabel->setNum(newZoom/10.0);
+    camera->changeZoom(newZoom/10.0);
+  }
 }
 
 float RAGoWidget::getLum()
 {
   return lum; 
-}
-
-float RAGoWidget::getZoom()
-{
-  return zoom; 
 }
 
 int RAGoWidget::getGobanSize()
@@ -234,13 +235,19 @@ void RAGoWidget::makeMove(StoneColor c, int x, int y)
   if(c==stoneWhite)
   {
       color=PLAYER_WHITE;
+      goban->play(color, x, y);
   }
   else if(c==stoneBlack)
   {
       color=PLAYER_BLACK;
+      goban->play(color, x, y);	
+  }
+  else if(c==stoneErase || c==stoneNone)
+  {
+    goban->remove(x,y);
   }
   
-  goban->play(color, x, y);
+  resetReferenceFrame();
 }
 
 void RAGoWidget::initGoban()
@@ -282,8 +289,11 @@ void RAGoWidget::searchNewMove()
       count=0;
     }
     
-    if(count>=20)
+    if(count>=5)
+    {
       emit playMove(player, precMove.first, precMove.second);
+      resetReferenceFrame();
+    }
   }
 }
 

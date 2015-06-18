@@ -10,6 +10,7 @@
 #include "define.hpp"
 
 using namespace rago;
+using namespace cv;
 
 Stone::Stone()
 {

@@ -31,6 +31,7 @@
 
 using namespace cv;
 using namespace std;
+using namespace rago;
 
 
 /** @function main */
@@ -336,7 +337,7 @@ void infoNetwork(Goban* goban, VirtualGoban* vg)
                         y=std::atoi(str.substr(8).c_str());
                     }
                     //cout<<color<<","<<x<<","<<y<<std::endl;
-                    goban->remove(color, x, y);
+                    goban->remove(x, y);
 
                 }
                 break;

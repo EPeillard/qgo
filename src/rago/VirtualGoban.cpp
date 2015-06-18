@@ -1,6 +1,7 @@
 #include "VirtualGoban.hpp"
-using namespace rago;
 
+using namespace rago;
+using namespace cv;
 
 VirtualGoban::VirtualGoban(Projector* proj)
 {
@@ -18,7 +19,7 @@ void VirtualGoban::draw()
 {
     //cout<<"trying to draw"<<std::endl;
     proj->draw(&matDraw);
-    waitKey(10);
+    waitKey(1);
 }
 
 void VirtualGoban::addStone(int color, int x, int y)

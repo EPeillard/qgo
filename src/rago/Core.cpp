@@ -17,12 +17,16 @@
 #include "Core.hpp"
 
 
+using namespace rago;
+using namespace aruco;
+using namespace cv;
+using namespace std;
+
+
 #ifdef COMP_MOD_VERBOSE
 Mat verbose;
 #endif // COMP_MOD_VERBOSE
 
-
-using namespace rago;
 
 Core::Core(Camera* camera, Projector* proj, Goban* goban)
 {
@@ -333,6 +337,14 @@ void Core::init()
 				///Search for extrema and print them
 				list_temp = findExtrema((*grp1),(*grp2));
 			}
+			
+			for (int i=0;i<list_temp.size();i++)
+			{
+			  if(list_temp[i]->x-3<0 || list_temp[i]->y-3<0 || list_temp[i]->x>src.cols-3 || list_temp[i]->y>src.rows-3)
+			  {
+			    list_temp.clear();
+			  }
+			}
 
 			for(int i=0;i<(*grp1).lines.size();i++)
 			{
@@ -563,7 +575,7 @@ void Core::detectCalibPtCirlces()
 
 int* Core::imagediff(int player)
 {
-    Mat frame2,maskDraw,maskDraw2;
+    Mat frame2,maskDraw,maskDraw2,frame2Gray;
     ///Creation of the mask in the Virtual Goban system
     maskDraw = Mat::zeros(FULL_VG_HEIGHT, FULL_VG_HEIGHT, CV_8UC3);
     maskDraw = cv::Scalar(0, 0, 0);
@@ -590,22 +602,22 @@ int* Core::imagediff(int player)
 
     /// Convert it to gray
     //cout<<"Convert it to gray"<<endl;
-    cvtColor( frame2, src_gray, CV_BGR2GRAY );
+    cvtColor( frame2, frame2Gray, CV_BGR2GRAY );
 
     /// Reduce the noise so we avoid false circle detection
     ///First an erosion
     vector<Vec3f> circles;
     Mat element = getStructuringElement(MORPH_ELLIPSE, Size(5, 5), Point(2, 2));
     //cout<<"erosion"<<endl;
-    erode(frame2, frame2, element);
+    erode(frame2Gray, frame2Gray, element);
     ///Then increase the contrast
     double alpha = 3;
     int beta = 20;
-    frame2.convertTo(frame2, -1, alpha, beta);
+    frame2Gray.convertTo(frame2Gray, -1, alpha, beta);
 
     ///Get all the circles on the image
     //cout<<"haought"<<endl;
-    HoughCircles( src_gray, circles, CV_HOUGH_GRADIENT, 1, src_gray.rows/8, 200, 10, 0, src_gray.rows/18 );
+    HoughCircles( frame2Gray, circles, CV_HOUGH_GRADIENT, 1, src_gray.rows/8, 200, 10, 0, src_gray.rows/18 );
 
     /// Draw the circles detected
     for( size_t i = 0; i < circles.size(); i++ )
@@ -614,12 +626,13 @@ int* Core::imagediff(int player)
       int radius = cvRound(circles[i][2]);
       // circle center
       circle( frame2, center, 3, Scalar(0,255,0), -1, 8, 0 );
-      circle( src_gray, center, 3, Scalar(0,255,0), -1, 8, 0 );
+      circle( frame2Gray, center, 3, Scalar(0,255,0), -1, 8, 0 );
       // circle outline
       circle( frame2, center, radius, Scalar(0,0,255), 3, 8, 0 );
-      circle( src_gray, center, radius, Scalar(0,0,255), 3, 8, 0 );
+      circle( frame2Gray, center, radius, Scalar(0,0,255), 3, 8, 0 );
     }
-    waitKey(100);
+    imshow(WINDOW_VERBOSE,frame2Gray);
+    waitKey(1);
 
     ///Getting the center of the first circle detected
     std::vector<cv::Point2f> inPts, outPts;
@@ -918,7 +931,7 @@ bool Core::findAndCleanGoban(vector<lineGrp>::iterator g1, vector<lineGrp>::iter
 
 vector<Vec2f> Core::findExtremaLinesOneGrp(lineGrp g1,lineGrp g2)
 {
-	//Il faudra gérer la division par zéro un jour ...
+	//TODO Il faudra gérer la division par zéro un jour ...
 
 	float a1,b1,a2i,b2i,a2j,b2j,xi,yi,xj,yj;
 	Vec2f lmax = g1.lines[0];

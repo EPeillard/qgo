@@ -2,6 +2,8 @@
 #include <ragowidget.h>
 
 using namespace rago;
+using namespace std;
+using namespace cv;
 
 Goban::Goban(VirtualGoban* vg)
 {
@@ -67,7 +69,7 @@ void Goban::play(int player, int x, int y)
     }
 }
 
-void Goban::remove(int player, int x, int y)
+void Goban::remove(int x, int y)
 {
     if(x>=1 && x<=19 && y>=1 && y<=19)
     {

@@ -19,9 +19,7 @@
 #include "Projector.hpp"
 #include "Goban.hpp"
 
-using namespace cv;
-using namespace std;
-using namespace aruco;
+
 /** \namespace rago
   *
   * namespace used to define all the functions used in the rago project
@@ -36,7 +34,7 @@ namespace rago{
  *
  **/
 struct lineGrp{
-    vector<Vec2f> lines;
+    std::vector<cv::Vec2f> lines;
     float anglMoy;
 };
 
@@ -81,7 +79,7 @@ public:
       *
       * \return Mat object for the conversion from Goban to Projector
       **/
-    Mat* getG2PMat();
+    cv::Mat* getG2PMat();
 
     /** \fn Mat* getVG2PMat()
       * \brief Getter for the VG2P matrix
@@ -90,7 +88,7 @@ public:
       * \return Mat object for the conversion from VirtualGoban to Projector
       *
       **/
-    Mat* getVG2PMat();
+    cv::Mat* getVG2PMat();
 
     /** \fn Mat* getC2GMat()
       * \brief Getter for the C2G matrix
@@ -98,7 +96,7 @@ public:
       *
       * \return Mat object for the conversion from Camera to Goban
       **/
-    Mat* getC2GMat();
+    cv::Mat* getC2GMat();
 
     /** \fn void genConvMat()
       * \brief Generation of the conversion matrix
@@ -110,7 +108,7 @@ public:
       * \brief Getter for the point list of corners
       * \return vector of the detected corners (Projector coordinates)
     **/
-    vector<Point2f*> getCorners();
+    std::vector<cv::Point2f*> getCorners();
 
 ///Main Core functions for the calibration of the camera/projector/goban
 
@@ -153,7 +151,7 @@ public:
     /** \fn int countNotBlack(Mat img, int lim)
       * \brief TODO
     **/
-    int countNotBlack(Mat img, int lim);
+    int countNotBlack(cv::Mat img, int lim);
 
     /** \fn void generateBeginningTurnMat()
       * \brief Take the reference image to use for comparing in detectHand and ImageDiff
@@ -164,10 +162,10 @@ public:
     /** \brief Reference image
       * This Mat represent the picture take before human player move for comparaison. Should be private
     **/
-    Mat beginningTurn; //TODO private
+    cv::Mat beginningTurn; //TODO private
     
     
-    vector<Point2f*> getList_corner_markers();
+    std::vector<cv::Point2f*> getList_corner_markers();
     
     int getGobanSize();
 
@@ -181,14 +179,14 @@ private:
      * 	\arg Vector of lines
      * 	\return sorted vector of lineGrp
      **/
-    vector<lineGrp> grpLines(vector<Vec2f>);
+    std::vector<lineGrp> grpLines(std::vector<cv::Vec2f>);
 
     /**	\fn void mergeRelatedLines(vector<lineGrp>*, Mat&)
      * 	\brief Merge lines of each group which are sufficiently close
      * 	\arg Vector of lines
      * 	\arg Matrix representing the frame
      **/
-    void mergeRelatedLines(vector<lineGrp> *, Mat &);
+    void mergeRelatedLines(std::vector<lineGrp> *, cv::Mat &);
 
     /**	\fn drawLine(Vec2f, Mat &, Scalar)
      * 	\brief Draw a line
@@ -196,7 +194,7 @@ private:
      * 	\arg Frame to draw into
      * 	\arg Color of the line
      **/
-    void drawLine(Vec2f, Mat &, Scalar rgb = CV_RGB(0,0,255));
+    void drawLine(cv::Vec2f, cv::Mat &, cv::Scalar rgb = CV_RGB(0,0,255));
 
     /**	\fn bool findAndCleanGoban(vector<lineGrp>::iterator, vector<lineGrp>::iterator)
      * 	\brief Search and clean a goban in the two set of lines
@@ -207,7 +205,7 @@ private:
      * 	\arg Second group of lines
      * 	\return If a goban has finally be found or not.
      **/
-    bool findAndCleanGoban(vector<lineGrp>::iterator, vector<lineGrp>::iterator);
+    bool findAndCleanGoban(std::vector<lineGrp>::iterator, std::vector<lineGrp>::iterator);
 
     /**	\fn vector<Vec2f> findExtremaLinesOneGrp(lineGrp,lineGrp)
 	 * 	\brief For one group, return the two extremal lines
@@ -215,7 +213,7 @@ private:
 	 * 	\arg Second group of lines (from which will be extract the lines)
 	 * 	\return The tow extremal lines
     **/
-    vector<Vec2f> findExtremaLinesOneGrp(lineGrp,lineGrp);
+    std::vector<cv::Vec2f> findExtremaLinesOneGrp(lineGrp,lineGrp);
 
 
     /**	\fn vector<Point2f*> findExtrema(lineGrp,lineGrp)
@@ -224,7 +222,7 @@ private:
 	 * 	\arg Second group of lines
 	 * 	\return The extremal points
     **/
-    vector<Point2f*> findExtrema(lineGrp,lineGrp);
+    std::vector<cv::Point2f*> findExtrema(lineGrp,lineGrp);
 
     /** \fn vector<Point2f*> reorderPoints(vector<Point2f*>&)
       * \brief Function reordering the point this way : 0 : top left corner, 1 top right corner, 2 bottom right corner, 3 bottom left corner
@@ -232,7 +230,7 @@ private:
       * \arg vector of points
       * \return reordered vector of points
     **/
-    vector<Point2f*> reorderPoints(vector<Point2f*>&);
+    std::vector<cv::Point2f*> reorderPoints(std::vector<cv::Point2f*>&);
 
     /** \fn vector<Point2f*> getFrameCircles(Mat, int)
       * \brief Return a vector of point representing the circles detected in a frame.
@@ -241,7 +239,7 @@ private:
       * \arg Maximum width of the detected circles
       * \return list of centers of detected circles
     **/
-    vector<Point2f*> getFrameCircles(Mat, int);
+    std::vector<cv::Point2f*> getFrameCircles(cv::Mat, int);
 
     /** \fn detectCalibPtCirlces()
       * \brief Set point_read with the detection circle detected in a frame
@@ -252,42 +250,42 @@ private:
 
     /**\brief Source Mat for image processing
     **/
-    Mat src;
+    cv::Mat src;
     /**\brief Source Mat converted in gray
     **/
-    Mat src_gray;
+    cv::Mat src_gray;
     /**\brief Mat used to detect lines
     **/
-    Mat m_lines;
+    cv::Mat m_lines;
     /**\brief Temporary Mat used to detect lines
     **/
-    Mat lines_tmp1;
+    cv::Mat lines_tmp1;
     /**\brief Temporary Mat used to detect lines
     **/
-    Mat lines_tmp2;
+    cv::Mat lines_tmp2;
     /**\brief Mat used to display calibration to the user
     **/
-    Mat display;
+    cv::Mat display;
 
     /**\brief Vector of points corresponding to the corners in Camera coordinate
     **/
-    vector<Point2f*> list_corner_markers;
+    std::vector<cv::Point2f*> list_corner_markers;
     /**\brief Vector of points corresponding to the corners in Projector coordinate
     **/
-    vector<Point2f*> list_corner_detected;
+    std::vector<cv::Point2f*> list_corner_detected;
 
     /**\brief Number of points actually detected
     **/
     int nbrPt;
     /**\brief Detection point displayed by the projector
     **/
-    Point2f *point_display;
+    cv::Point2f *point_display;
     /**\brief Detection point read by the camera
     **/
-    Point2f *point_read;
+    cv::Point2f *point_read;
     /**\brief Location of marker for projector calibration
      **/
-	vector<pair<Point2f,Point2f> > marker_points;
+    std::vector<std::pair<cv::Point2f,cv::Point2f> > marker_points;
 
     /**\brief Margin between the center of the detection point and a corner of the goban
     **/
@@ -302,17 +300,17 @@ private:
 
     /**\brief Matrix for the conversion from Goban to Projector
     **/
-    Mat G2P;
+    cv::Mat G2P;
     /**\brief Matrix for the conversion from Camera to Goban
     **/
-    Mat C2G;
+    cv::Mat C2G;
     /**\brief Matrix for the conversion from Projector to Camera
     **/
-    Mat P2C;
+    cv::Mat P2C;
     /**\brief Matrix for the conversion from VirtualGoban to Projector
     **/
-    Mat VG2P;
-    Mat VG2C;
+    cv::Mat VG2P;
+    cv::Mat VG2C;
 
     int minGray;
     int minPixel;

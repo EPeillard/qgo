@@ -17,10 +17,6 @@
 #include "VirtualGoban.hpp"
 #include "Network.hpp"
 
-using namespace std;
-using namespace cv;
-using namespace rago;
-
 namespace rago{
 /** \class  rago::Goban Goban.hpp Goban
   *
@@ -76,9 +72,8 @@ public:
       * Remove a stone from the goban
       * \arg x position of the stone
       * \arg y position of the stone
-      * \arg player (0 for none, 1 for white, 2 for black
       **/
-    void remove(int, int, int);
+    void remove(int, int);
 
 private:
 
@@ -89,7 +84,7 @@ private:
     /** 2D array of stones
       *
       **/
-    vector<vector<Stone*> > tab_stone;
+    std::vector<std::vector<Stone*> > tab_stone;
 
 };
 
