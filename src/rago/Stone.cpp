@@ -19,6 +19,12 @@ Stone::Stone()
     this->value = PLAYER_NONE;
 }
 
+Stone::Stone(int p, int x, int y)
+{
+  setDraw(x,y,p);
+}
+
+
 Stone::~Stone()
 {
 }
@@ -40,3 +46,14 @@ int Stone::getPlayer()
 {
     return value;
 }
+
+int Stone::getX()
+{
+  return x;
+}
+
+int Stone::getY()
+{
+  return y;
+}
+

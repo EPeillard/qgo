@@ -31,6 +31,7 @@
 #include "matrix.h"
 #include "ui_boardwindow.h"
 #include <QtWidgets>
+#include <ragowidget.h>
 
 class BoardHandler;
 
@@ -129,6 +130,13 @@ BoardWindow::BoardWindow(GameData *gd, bool iAmBlack , bool iAmWhite, class Boar
         window_y = settings.value("BOARD_WINDOW_SIZE_Y").toInt();
         resize(window_x, window_y);
     }
+    
+    if(ragoWidget->getPhase()==enabled)
+      ui->ragoButton->setEnabled(true);
+    else
+      ui->ragoButton->setEnabled(false);
+    
+    connect(ui->ragoButton,SIGNAL(isChecked(bool)),ragoWidget,SLOT(blockRago(bool)));
 
     // Connects the nav buttons to the slots
     connect(ui->navForward,SIGNAL(pressed()), tree, SLOT(slotNavForward()));

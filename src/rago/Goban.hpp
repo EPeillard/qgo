@@ -74,6 +74,8 @@ public:
       * \arg y position of the stone
       **/
     void remove(int, int);
+    
+    void addNewStone(int, int, int);
 
 private:
 
@@ -85,6 +87,8 @@ private:
       *
       **/
     std::vector<std::vector<Stone*> > tab_stone;
+    
+    Stone lastStone;
 
 };
 

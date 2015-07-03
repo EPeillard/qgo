@@ -30,6 +30,9 @@ public:
       * Main constructor
       **/
     Stone();
+    
+    Stone(int,int,int);
+    
     /** \fn ~Stone()
       * Main destructor
       **/
@@ -50,6 +53,10 @@ public:
     void setDraw(int, int, int);
 
     int getPlayer();
+    
+    int getX();
+    
+    int getY();
 
 private:
     int x, y, value;

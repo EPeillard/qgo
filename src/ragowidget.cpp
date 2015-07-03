@@ -1,3 +1,4 @@
+
 #include "ragowidget.h"
 #include "ui_ragowidget.h"
 #include <qgoboard.h>
@@ -229,8 +230,32 @@ RAGoPhase RAGoWidget::getPhase()
   return phase;
 }
 
+void RAGoWidget::addNewMoveMark(StoneColor c, int x, int y)
+{
+  
+  if(newStone.getPlayer()!=PLAYER_NONE && goban->isSomething(newStone.getX(),newStone.getY()))
+    vg->addStone(newStone.getPlayer(),newStone.getX(),newStone.getY());
+  
+  qDebug("Make new move : %i,%i",x,y);
+  int color;
+  if(c==stoneWhite)
+  {
+      color=PLAYER_WHITE;
+      vg->addNewMark(c,x,y);
+  }
+  else if(c==stoneBlack)
+  {
+      color=PLAYER_BLACK;
+      vg->addNewMark(c,x,y);
+  }
+  
+  newStone.setDraw(x,y,color);
+}
+
+
 void RAGoWidget::makeMove(StoneColor c, int x, int y)
 {
+  qDebug("Make move : %i,%i",x,y);
   int color;
   if(c==stoneWhite)
   {
@@ -247,59 +272,82 @@ void RAGoWidget::makeMove(StoneColor c, int x, int y)
     goban->remove(x,y);
   }
   
-  resetReferenceFrame();
+  //resetReferenceFrame();
 }
 
 void RAGoWidget::initGoban()
 {
   goban->setGoban();
+  waitKey(500);
   resetReferenceFrame();
 }
 
 void RAGoWidget::resetReferenceFrame()
 {
-  waitKey(200);
   core->generateBeginningTurnMat();
 }
 
 //Called every 100ms
 void RAGoWidget::searchNewMove()
 {
-  if(phase==enabled && attachedBoard)
+  try{
+    if(phase==enabled && attachedBoard &&!block)
+    {
+      int* result;
+      int player;
+      if(attachedBoard->getBlackTurn())
+	player=1;
+      else
+	player=0;
+      
+      result = core->imagediff(player);
+      
+      if(precMove.first==result[0] && precMove.second==result[1]
+	&& precMove.first>=1 && precMove.second>=1
+	&& precMove.first<=getGobanSize() && precMove.second<=getGobanSize())
+      {
+	count++;
+      }
+      else
+      {
+	precMove.first=result[0];
+	precMove.second=result[1];
+	count=0;
+      }
+      
+      if(count>=5)
+      {
+	emit playMove(player, precMove.first, precMove.second);
+	resetReferenceFrame();
+      }
+    }
+  }
+  catch(exception)
   {
-    int* result;
-    int player;
-    if(attachedBoard->getBlackTurn())
-      player=1;
-    else
-      player=0;
-    
-    result = core->imagediff(player);
-    
-    if(precMove.first==result[0] && precMove.second==result[1]
-      && precMove.first>=1 && precMove.second>=1
-      && precMove.first<=getGobanSize() && precMove.second<=getGobanSize())
-    {
-      count++;
-    }
-    else
-    {
-      precMove.first=result[0];
-      precMove.second=result[1];
-      count=0;
-    }
-    
-    if(count>=5)
-    {
-      emit playMove(player, precMove.first, precMove.second);
-      resetReferenceFrame();
-    }
+    qDebug("** RAGO : Search move error");
   }
 }
 
 void RAGoWidget::attachBoard(qGoBoard* b)
 {
   attachedBoard=b;
+}
+
+void RAGoWidget::detachBoard(qGoBoard* b)
+{
+  if(b==attachedBoard)
+    attachedBoard=nullptr;
+}
+
+void RAGoWidget::blockRago(bool b)
+{
+  if(b)
+    block=true;
+  else
+  {
+    resetReferenceFrame();
+    block=false;
+  }
 }
 
 

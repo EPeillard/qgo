@@ -8,6 +8,7 @@ using namespace cv;
 Goban::Goban(VirtualGoban* vg)
 {
     this->vg = vg;
+    lastStone=Stone();
 }
 
 Goban::~Goban()
@@ -27,6 +28,7 @@ void Goban::setGoban()
             tab_stone[i][j]->setDraw(i, j, PLAYER_NONE);
         }
     }
+    vg->removeBorders();
 }
 
 void Goban::playTerminal(int player)
@@ -64,8 +66,20 @@ void Goban::play(int player, int x, int y)
     ///Verification of the position of the stone
     if(x>=1 && x<=19 && y>=1 && y<=19)
     {
+      if(tab_stone[x-1][y-1]->getPlayer()!=player)
+      {
+	if(lastStone.getPlayer()!=PLAYER_NONE)
+	{
+	  if(tab_stone[lastStone.getX()-1][lastStone.getY()-1]->getPlayer()!=PLAYER_NONE)
+	    vg->addStone(lastStone);
+	}
+	  
         tab_stone[x-1][y-1]->setPlayer(player);
         vg->addStone(player, x, y);
+	vg->addNewMark(player, x, y);
+	
+	lastStone=Stone(player, x, y);
+      }
     }
 }
 
@@ -73,8 +87,11 @@ void Goban::remove(int x, int y)
 {
     if(x>=1 && x<=19 && y>=1 && y<=19)
     {
+      if(tab_stone[x-1][y-1]->getPlayer()!=PLAYER_NONE)
+      {
         tab_stone[x-1][y-1]->setPlayer(PLAYER_NONE);
         vg->remove(x, y);
+      }
     }
 }
 

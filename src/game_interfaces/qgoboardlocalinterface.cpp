@@ -31,6 +31,7 @@
 #include "board.h"
 #include "matrix.h"
 #include "audio.h"
+#include <ragowidget.h>
 
 #include <QMessageBox>
 
@@ -85,6 +86,8 @@ qGoBoardLocalInterface::qGoBoardLocalInterface(BoardWindow *bw, Tree * t, GameDa
 qGoBoardLocalInterface::~qGoBoardLocalInterface()
 {
     qDebug("Deconstructing computer interface");
+    if(ragoWidget->getPhase()==enabled)
+      ragoWidget->detachBoard(this);
     delete gtp;
 }
 

@@ -268,7 +268,7 @@ class qGoBoardObserveInterface : public qGoBoardNetworkInterface
 
 public:
 	qGoBoardObserveInterface(BoardWindow *boardWindow, Tree * tree, GameData *gameData);
-	~qGoBoardObserveInterface() {}
+	~qGoBoardObserveInterface();
 
 	void setModified(bool)	{} //we don't modify an observed game
 	
@@ -296,7 +296,7 @@ class qGoBoardMatchInterface : public qGoBoardNetworkInterface
 
 public:
 	qGoBoardMatchInterface(BoardWindow *boardWindow, Tree * tree, GameData *gameData);
-	~qGoBoardMatchInterface() {}
+	~qGoBoardMatchInterface();
 
 	void setModified(bool)	{} //we don't modify a match game
 	void setTimerInfo(const QString&, const QString&, const QString&, const QString&);
@@ -337,7 +337,7 @@ class qGoBoardReviewInterface : public qGoBoardNetworkInterface
 
 public:
 	qGoBoardReviewInterface(BoardWindow *boardWindow, Tree * tree, GameData *gameData);
-	~qGoBoardReviewInterface() {}
+	~qGoBoardReviewInterface();
 
 //	void setModified(bool)	{} //we don't modify an  game
 //	void setResult(QString res, QString xt_res);

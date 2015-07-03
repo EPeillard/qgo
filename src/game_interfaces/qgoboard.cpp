@@ -345,7 +345,8 @@ void qGoBoard::doPass(StoneColor c)
  */
 Move *qGoBoardNetworkInterface::doMove(StoneColor c, int x, int y)
 {
-      qDebug("**  RAGO : %i played %i;%i",c,x,y);
+    qDebug("**  RAGO : %i played %i;%i",c,x,y);
+    
     bool validMove = (dontCheckValidity || tree->getCurrent()->checkMoveIsValid(c, x, y));
     dontCheckValidity = false;
     if (!validMove)
@@ -601,3 +602,22 @@ TimeRecord qGoBoard::getTheirTimeRecord(void)
 {
 	return boardwindow->getClockDisplay()->getTimeRecord(!boardwindow->getMyColorIsBlack());
 }
+
+qGoBoardMatchInterface::~qGoBoardMatchInterface()
+{
+  if(ragoWidget->getPhase()==enabled)
+    ragoWidget->detachBoard(this);
+}
+
+qGoBoardObserveInterface::~qGoBoardObserveInterface()
+{
+  if(ragoWidget->getPhase()==enabled)
+    ragoWidget->detachBoard(this);
+}
+
+qGoBoardReviewInterface::~qGoBoardReviewInterface()
+{
+  if(ragoWidget->getPhase()==enabled)
+    ragoWidget->detachBoard(this);
+}
+

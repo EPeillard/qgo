@@ -10,6 +10,7 @@
 #include "Network.hpp"
 #include "VirtualGoban.hpp"
 #include "Projector.hpp"
+#include "Stone.hpp"
 
 #include <iostream>
 #include <sstream>
@@ -52,8 +53,10 @@ public:
     int getGobanSize();
     RAGoPhase getPhase();
     void makeMove(StoneColor,int,int);
+    void addNewMoveMark(StoneColor, int, int);
     void initGoban();
     void attachBoard(qGoBoard*);
+    void detachBoard(qGoBoard*);
 
 public slots:
   void activateRAGo(int);
@@ -66,6 +69,7 @@ public slots:
   void changeZoom(int);
   void searchNewMove();
   void resetReferenceFrame();
+  void blockRago(bool);
     
 private:
     Ui::RAGoWidget *ui;
@@ -81,6 +85,8 @@ private:
     int count=0;
     qGoBoard* attachedBoard;
     pair<int,int> precMove;
+    bool block=false;
+    rago::Stone newStone = rago::Stone();
     
 signals:
   void playMove(int color, int x, int y);

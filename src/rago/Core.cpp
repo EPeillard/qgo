@@ -403,7 +403,7 @@ void Core::detection()
         proj->draw(PROJ_MOD_BOARD, markerPoints, markerIds);
         waitKey(2000);
         src = camera->getFrame();
-        imshow(WINDOW_CAMERA,src);
+        //imshow(WINDOW_CAMERA,src);
         waitKey(100);
 
         MarkerDetector myDetector;
@@ -611,7 +611,7 @@ int* Core::imagediff(int player)
     //cout<<"erosion"<<endl;
     erode(frame2Gray, frame2Gray, element);
     ///Then increase the contrast
-    double alpha = 3;
+    double alpha = 4;
     int beta = 20;
     frame2Gray.convertTo(frame2Gray, -1, alpha, beta);
 
@@ -685,7 +685,7 @@ vector<Point2f*> Core::getFrameCircles(Mat frame, int width)
       circle(frameTemp, Point2f(cvRound(circles[i][0]), cvRound(circles[i][1])) , 10,  Scalar(0, 255, 255), 2);
     }
 
-    imshow( "Circle Detection", frameTemp );
+    imshow( WINDOW_VERBOSE, frameTemp );
     //cout<<"Press any key to continue"<<endl;
 
     return list_center;

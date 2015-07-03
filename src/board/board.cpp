@@ -53,7 +53,7 @@ Board::Board(QWidget *parent, QGraphicsScene *c)
 {
     QSettings settings;
 
-	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     isDisplayBoard = false;
     lockResize =  false;
@@ -64,7 +64,7 @@ Board::Board(QWidget *parent, QGraphicsScene *c)
     curX = curY = -1;
     downX = downY = -1;
 
-	coordType = uninit;
+    coordType = uninit;
     marks = new QList<Mark*>;
     stones = new QHash<int,Stone*>();
     ghosts = new QList<Stone*>;
@@ -524,27 +524,34 @@ void Board::updateStone(StoneColor c, int x, int y, bool dead)
 {
     Stone *stone = stones->value(coordsToKey(x, y),NULL);
     //if ((stone == NULL) & ((c == stoneBlack) || (c == stoneWhite)))
-	
+
+    
+    if(ragoWidget->getPhase()==enabled)
+    {
+      if(dead)
+	ragoWidget->makeMove(stoneNone, x, y);
+      else
+	ragoWidget->makeMove(c, x, y);
+    }
+    
+      
     switch (c)
     {   
       case stoneBlack:
       case stoneWhite:
+	
 	if (stone == NULL)
 	{
 	  stone = new Stone(imageHandler->getStonePixmaps(), canvas, c, x, y,true);
 	  stone->setPos(offsetX + square_size * (x - 1) - stone->pixmap().width()/2,
 	  offsetY + square_size * (y - 1) - stone->pixmap().height()/2 );
 	  stones->insert(coordsToKey(x,y) , stone);
-	  if(ragoWidget->getPhase()==enabled)
-	    ragoWidget->makeMove(c, x, y);
 	  break;
 	}
 
 	if (stone->getColor() != c)
 	{
 	  stone->setColor(c);
-	  if(ragoWidget->getPhase()==enabled)
-	    ragoWidget->makeMove(c, x, y);
 	}
 	  
 	// We need to check wether the stones have been toggled dead or seki before (scoring mode)
@@ -552,23 +559,17 @@ void Board::updateStone(StoneColor c, int x, int y, bool dead)
 	{
 	  stone->togglePixmap(imageHandler->getStonePixmaps(), true);
 	  stone->setDead(false);
-	  if(ragoWidget->getPhase()==enabled)
-	    ragoWidget->makeMove(c, x, y);
 	}
 	
 	if ((!stone->isDead()) && dead)
 	{
 	  stone->togglePixmap(imageHandler->getGhostPixmaps(), false);
 	  stone->setDead();
-	  if(ragoWidget->getPhase()==enabled)
-	    ragoWidget->makeMove(stoneErase, x, y);
 	}
 
 	if (!stone->isVisible())
 	{
 	    stone->show();
-	    if(ragoWidget->getPhase()==enabled)
-	      ragoWidget->makeMove(c, x, y);
 	}
 
 	break;
@@ -579,8 +580,6 @@ void Board::updateStone(StoneColor c, int x, int y, bool dead)
       if (stone && stone->isVisible())
       {
 	  stone->hide();
-	  if(ragoWidget->getPhase()==enabled)
-	    ragoWidget->makeMove(c, x, y);
       }
       break;
 	    
@@ -856,6 +855,12 @@ void Board::removeLastMoveMark()
 	if (lastMoveMark != NULL)
 	{
 //		lastMoveMark->hide();
+		StoneColor c;
+		if(lastMoveMark->getColor()==Qt::black)
+		  c=stoneBlack;
+		else
+		  c=stoneWhite;
+		
 		delete lastMoveMark;
 		lastMoveMark = NULL;
 	}
@@ -893,6 +898,8 @@ void Board::removeLastMoveMark()
 		Q_ASSERT(lastMoveMark);
 //		lastMoveMark = new MarkCircle(x, y, square_size, canvas,
 //			c == stoneBlack ? white : black, setting->readBoolEntry("SMALL_STONES"));
+		/*if(ragoWidget->getPhase()==enabled)
+		  ragoWidget->addNewMoveMark(c,x,y);*/
 		lastMoveMark->setPos(offsetX + square_size * (x-1) - lastMoveMark->getSizeX()/2,
 					offsetY + square_size * (y-1) - lastMoveMark->getSizeY()/2);
 		lastMoveMark->show();
@@ -1109,9 +1116,11 @@ bool Board::updateAll(Move * move)
              * We could say that the handicap stones aren't
              * edits, but this is what they've been set up
              * as so that's more tricky. */
+	    
+	    
             dead = (m->isStoneDead(x, y)) & (move->getMoveNumber() != 0);
             color = m->getStoneAt(x, y);
-
+	    
             if (oneColorGo && color == stoneBlack)
                 color = stoneWhite;
             updateStone(color,x,y, dead);
@@ -1171,6 +1180,11 @@ bool Board::updateAll(Move * move)
             }
         }
     }
+    
+    cv::waitKey(200);
+    if(ragoWidget->getPhase()==enabled)
+      ragoWidget->resetReferenceFrame();
+    
     return modified;
 }
 

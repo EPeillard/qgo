@@ -10,7 +10,7 @@ VirtualGoban::VirtualGoban(Projector* proj)
     matDraw = cv::Scalar(0, 0, 0);
     Rect cache = Rect(VG_PADDING, VG_PADDING, VG_HEIGHT+FULL_VG_PADDING+VG_PADDING, VG_WIDTH+FULL_VG_PADDING+VG_PADDING);
     rectangle(matDraw,cache , Scalar(137, 134, 208), -1);
-    namedWindow( WINDOW_VG, CV_WINDOW_FREERATIO );
+    //namedWindow( WINDOW_VG, CV_WINDOW_FREERATIO );
 }
 
 VirtualGoban::~VirtualGoban(){}
@@ -19,8 +19,27 @@ void VirtualGoban::draw()
 {
     //cout<<"trying to draw"<<std::endl;
     proj->draw(&matDraw);
-    waitKey(1);
+    //waitKey(1);
 }
+
+void VirtualGoban::addNewMark(int color, int x, int y)
+{  
+  if(color == PLAYER_WHITE)
+  {
+      circle(matDraw, Point(FULL_VG_PADDING+RATIO_G_VG*(x-1), FULL_VG_PADDING+RATIO_G_VG*(y-1)), 20,  Scalar(0,0,0), -1);
+  }
+  if(color == PLAYER_BLACK)
+  {
+      circle(matDraw, Point(FULL_VG_PADDING+RATIO_G_VG*(x-1), FULL_VG_PADDING+RATIO_G_VG*(y-1)), 20,  Scalar(255,255,255), -1);
+  }
+  draw();
+}
+
+void VirtualGoban::addStone(Stone s)
+{
+  addStone(s.getPlayer(), s.getX(), s.getY());
+}
+
 
 void VirtualGoban::addStone(int color, int x, int y)
 {
@@ -28,24 +47,26 @@ void VirtualGoban::addStone(int color, int x, int y)
     if(color == PLAYER_WHITE)
     {
         circle(matDraw, Point(FULL_VG_PADDING+RATIO_G_VG*(x-1), FULL_VG_PADDING+RATIO_G_VG*(y-1)), STONE_SIZE,  Scalar(255, 255, 255), -1);
+        circle(matDraw, Point(FULL_VG_PADDING+RATIO_G_VG*(x-1), FULL_VG_PADDING+RATIO_G_VG*(y-1)), STONE_BORDER_SIZE,  Scalar(0, 0, 0), STONE_BORDER_SIZE-STONE_SIZE);
         //cout<<"white"<<std::endl;
     }
     if(color == PLAYER_BLACK)
     {
+	circle(matDraw, Point(FULL_VG_PADDING+RATIO_G_VG*(x-1), FULL_VG_PADDING+RATIO_G_VG*(y-1)), STONE_BORDER_SIZE,  Scalar(0, 0, 0), -1);
         circle(matDraw, Point(FULL_VG_PADDING+RATIO_G_VG*(x-1), FULL_VG_PADDING+RATIO_G_VG*(y-1)), STONE_BORDER_SIZE,  Scalar(255, 255, 255), STONE_BORDER_SIZE-STONE_SIZE);
         //cout<<"black"<<std::endl;
     }
 
-    imshow(WINDOW_VG, matDraw);
+    //imshow(WINDOW_VG, matDraw);
     draw();
 }
 
 void VirtualGoban::remove(int x, int y)
 {
     //cout<<"remove "<<std::endl;
-    circle(matDraw, Point(FULL_VG_PADDING+RATIO_G_VG*(x-1), FULL_VG_PADDING+RATIO_G_VG*(y-1)), STONE_SIZE,  Scalar(137, 134, 208), -1);
+    circle(matDraw, Point(FULL_VG_PADDING+RATIO_G_VG*(x-1), FULL_VG_PADDING+RATIO_G_VG*(y-1)), STONE_BORDER_SIZE+5,  Scalar(137, 134, 208), -1);
 
-    imshow(WINDOW_VG, matDraw);
+   // imshow(WINDOW_VG, matDraw);
     draw();
 }
 
@@ -63,9 +84,9 @@ void VirtualGoban::drawBorders()
 
     //cout << "matDraw size : " << matDraw.size() << endl;
 
-    imwrite("coucou.jpg",matDraw);
+    //imwrite("coucou.jpg",matDraw);
 
-    imshow(WINDOW_VG, matDraw); //Pour une raison inconnue, cette ligne seg fault parfois
+    //imshow(WINDOW_VG, matDraw); //Pour une raison inconnue, cette ligne seg fault parfois
 
     //cout << "Coucou" << endl;
 
@@ -77,7 +98,7 @@ void VirtualGoban::removeBorders()
     matDraw = cv::Scalar(0, 0, 0);
     Rect cache = Rect(VG_PADDING, VG_PADDING, VG_HEIGHT+FULL_VG_PADDING, VG_WIDTH+FULL_VG_PADDING);
     rectangle(matDraw,cache , Scalar(137, 134, 208), -1);
-    imshow("VirtualGoban", matDraw);
+    //imshow(WINDOW_VG, matDraw);
     draw();
 }
 
@@ -144,7 +165,7 @@ void VirtualGoban::setClock2(int time)
 void VirtualGoban::drawClock()
 {
     circle(matDraw, Point(CLOCK_CENTER_X, CLOCK_CENTER_Y) , CLOCK_SIZE,  Scalar(150, 150, 150), -1);
-    imshow(WINDOW_VG, matDraw);
+    //imshow(WINDOW_VG, matDraw);
     draw();
 }
 
@@ -152,14 +173,14 @@ void VirtualGoban::drawClockBorders(int val)
 {
     circle(matDraw, Point(CLOCK_CENTER_X, CIRCLE_CENTER_Y) , CLOCK_SIZE,  Scalar(0, 0, 0), -1);
     circle(matDraw, Point(CLOCK_CENTER_X, CIRCLE_CENTER_Y) , CLOCK_SIZE-(val)*20,  Scalar(0, 0, 200), CIRCLE_WIDTH);
-    imshow(WINDOW_VG, matDraw);
+    //imshow(WINDOW_VG, matDraw);
     draw();
 }
 
 void VirtualGoban::removeClockBorders()
 {
     circle(matDraw, Point(CLOCK_CENTER_X, CIRCLE_CENTER_Y) , CLOCK_SIZE,  Scalar(0, 0, 0), -1);
-    imshow(WINDOW_VG, matDraw);
+    //imshow(WINDOW_VG, matDraw);
     draw();
 }
 

@@ -14,6 +14,7 @@
 
 #include "define.hpp"
 #include "Projector.hpp"
+#include "Stone.hpp"
 
 namespace rago{
 
@@ -33,6 +34,7 @@ private:
     cv::Mat matDraw;
     /** Projector object **/
     Projector* proj;
+    
 
 public:
 
@@ -58,6 +60,9 @@ public:
       * \arg y position of the stone
       **/
     void addStone(int, int, int);
+    
+    void addStone(Stone);
+    
     /** \fn setClock1(int)
       * Draw the clock of the player 1
       * \arg number of second remaining
@@ -96,6 +101,8 @@ public:
       * \arg y position of the stone
       **/
     void remove(int x, int y);
+    
+    void addNewMark(int color, int x, int y);
 };
 
 }
