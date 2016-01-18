@@ -98,16 +98,11 @@ private:
       **/
     void emptyBuffer();
 
-
-    void refreshFrame();
-
     /** Most recent frame
     **/
     cv::Mat frame;
 
     bool refreshing;
-
-    std::thread refresh;
     
     cv::Size s;
     

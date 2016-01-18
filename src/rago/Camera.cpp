@@ -26,46 +26,18 @@ Camera::Camera()
     refreshing=true;
     capture>>frame;
     s = Size(frame.cols, frame.rows);
-    //refresh = thread(&Camera::refreshFrame, this);
 }
 
-void Camera::refreshFrame()
-{
-    Mat temp;
-    
-    while(refreshing)
-    {
-	try{
-	  capture >> temp;
-	  Size s(temp.cols, temp.rows);
-	  qDebug("** Zoom %f",zoom);
-	  Rect roi(temp.cols*(1.0-1.0/zoom)/2.0,temp.rows*(1.0-1.0/zoom)/2.0,temp.cols/zoom,temp.rows/zoom);
-	  temp=temp(roi);
-	  qDebug("** Resize : %i,%i",temp.cols,temp.rows);
-	  resize(temp, temp, s); 
-	  qDebug("** source : %i,%i",s.width,s.height);
-	  qDebug("** temp : %i,%i",temp.cols,temp.rows);
-	  frame=temp;
-	}
-	catch (exception)
-	{
-	  qDebug("** Zoom error");
-	}
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
-    }
-}
 
 Camera::~Camera()
 {
     refreshing=false;
-    refresh.join();
     capture.release();
 }
 
 void Camera::nextCam()
 {
     refreshing=false;
-    //refresh.join();
     capture.release();
     
     id++;
@@ -84,9 +56,8 @@ void Camera::nextCam()
     
     refreshing=true;
     capture>>frame;
-    s = Size(frame.cols, frame.rows);
     
-    //refresh = thread(&Camera::refreshFrame, this);
+    s = Size(frame.cols, frame.rows);
 }
 
 void Camera::changeZoom(float newZoom)
