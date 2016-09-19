@@ -187,19 +187,6 @@ void Core::genConvMat()
 void Core::init()
 {
     //TODO checkez les modes sans initialisation
-/*
-    int key=0;
-    while(key<=0)
-    {
-    	imshow(WINDOW_CAMERA,Mat(camera->getFrame()));
-    	key=waitKey(100);
-    	if(key=='c')
-    	{
-            camera->nextCam();
-            key=0;
-    	}
-    }
-*/
 
 #ifndef COMP_MOD_NO_INIT
     vector<Point2f*> list_temp;
@@ -207,6 +194,7 @@ void Core::init()
     ///While the isn't enough corners detected
     while(list_temp.size()!=CORNER_NUMBER)
     {
+      //ca manque de commentaire (MS)
     	Mat kernel = (Mat_<uchar>(3,3) << 0,1,0,1,1,1,0,1,0);
 
         int nbMean=1;
