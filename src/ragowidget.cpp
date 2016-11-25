@@ -307,9 +307,9 @@ void RAGoWidget::searchNewMove()
 	&& precMove.first<=getGobanSize() && precMove.second<=getGobanSize())
       {
 	count++;
-      {
       }
       else
+      {
 	precMove.first=result[0];
 	precMove.second=result[1];
 	count=0;
