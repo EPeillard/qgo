@@ -184,7 +184,7 @@ void Core::genConvMat()
     //cout << VG2P << endl;
 }
 
-void Core::init()
+void Core::initAuto()
 {
     //TODO checkez les modes sans initialisation
 
@@ -793,11 +793,11 @@ vector<lineGrp> Core::grpLines(vector<Vec2f> lines)
         vector<lineGrp>::iterator currentGrp;
         for(currentGrp=group.begin();currentGrp!=group.end();currentGrp++)
         {
-            if(abs((*currentLine)[1]-(*currentGrp).anglMoy)<CV_PI*20/180 || abs((*currentLine)[1]-(*currentGrp).anglMoy)>CV_PI*(180-20)/180)
+            if(abs((*currentLine)[1]-(*currentGrp).anglMoy)<CV_PI*30/180 || abs((*currentLine)[1]-(*currentGrp).anglMoy)>CV_PI*(180-30)/180)
             {
-                if(abs((*currentLine)[1]-(*currentGrp).anglMoy)<CV_PI*20/180)
+                if(abs((*currentLine)[1]-(*currentGrp).anglMoy)<CV_PI*30/180)
                     (*currentGrp).anglMoy=((*currentGrp).lines.size()*(*currentGrp).anglMoy+(*currentLine)[1])/((*currentGrp).lines.size()+1);
-                if(abs((*currentLine)[1]-(*currentGrp).anglMoy)>CV_PI*(180-20)/180)
+                if(abs((*currentLine)[1]-(*currentGrp).anglMoy)>CV_PI*(180-30)/180)
                 {
                 	if((*currentLine)[1]>(*currentGrp).anglMoy)
                 		(*currentGrp).anglMoy=((*currentGrp).lines.size()*(*currentGrp).anglMoy+(*currentLine)[1]-CV_PI)/((*currentGrp).lines.size()+1);

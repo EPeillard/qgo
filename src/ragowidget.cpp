@@ -51,8 +51,8 @@ void RAGoWidget::activateRAGo(int state)
       camera = new Camera();
       goban = new Goban(vg);
       core = new Core(camera, proj, goban);
-      ui->errorLabel->setText("RAGo prêt à être configuré. ");
-      ui->label->setText("Placez la fenêtre sur l'écran correspondant au projecteur et la maximiser. \nChoisir la caméra à utiliser. ");
+      ui->errorLabel->setText("RAGo est prêt à être configuré. ");
+      ui->label->setText("Placez la fenêtre sur l'écran correspondant au projecteur et la maximiser. \nChoisir la caméra à utiliser. \nChoisir le mode de calibration. ");
     
       ///Drawing a white image on the goban to improve the detection of the corners
       proj->draw(PROJ_MOD_1 , PROJECTOR_WIDTH, PROJECTOR_HEIGHT);
@@ -97,7 +97,12 @@ void RAGoWidget::startCalib()
   ui->buttonCalib->setEnabled(false);
   
   ui->checkConfig->setEnabled(false);
-  core->init();
+  
+  if(ui->radioButton_calibAuto->isChecked())
+  {
+    core->initAuto();
+  }
+  
   ui->checkConfig->setEnabled(true);
   phase=calibCameraEnd;
   QString txt = QString("Un goban de taille ") + QString(to_string(core->getGobanSize()).c_str()) + QString(" a été détecté. \nLa calibration est correcte si les points s'affichent sur les coins du goban. ");
@@ -111,12 +116,13 @@ void RAGoWidget::updateFrame()
     Mat frame = camera->getFrame();
     cvtColor(frame, frame, CV_BGR2RGB);
     
-    if(phase!=calibCamera && phase != waitCalib)
+    if(phase==calibCameraEnd)
     {
-	for(int i=0;i<4;i++)
-	{
-	  circle(frame,(*(core->getList_corner_markers()[i])),5,Scalar(0,0,128),-1,8);
-	}
+	  for(int i=0;i<4;i++)
+	  {
+	    if(core->getList_corner_markers().size()==4)
+	      circle(frame,(*(core->getList_corner_markers()[i])),5,Scalar(0,0,128),-1,8);
+	  }
     }
     
     QImage image(frame.data, frame.cols, frame.rows, frame.step, QImage::Format_RGB888);
@@ -164,14 +170,7 @@ void RAGoWidget::wrongCalib()
 {
   if(phase==calibCameraEnd)
   {
-    ui->label->setText("Patienter pendant la calibration de la caméra... ");
-    phase=calibCamera;
-    ui->checkConfig->setEnabled(false);
-    core->init();
-    ui->checkConfig->setEnabled(true);
-    phase=calibCameraEnd;
-  QString txt = QString("Un goban de taille ") + QString(to_string(core->getGobanSize()).c_str()) + QString(" a été détecté. \nLa calibration est correcte si les points s'affichent sur les coins du goban. ");
-  ui->label->setText(txt);
+    startCalib();
   }
   else if(phase==calibProjectorEnd)
   {

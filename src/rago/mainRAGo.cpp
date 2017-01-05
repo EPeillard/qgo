@@ -50,7 +50,7 @@ int mainRago(int argc, char** argv)
     Core* core = new Core(camera, proj, goban);
 
     ///Initialisation
-    core->init();
+    core->initAuto();
 
     string s="";
     ///Looping the detection while the user haven't validate it

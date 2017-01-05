@@ -117,7 +117,7 @@ public:
       * Initialization before the detection.
       * First the stone putted on the corners are read to get there coordinates in the camera system.
     **/
-    void init();
+    void initAuto();
 
     /** \fn void detection()
       * \brief Detection by displaying markers
@@ -170,7 +170,7 @@ public:
     int getGobanSize();
 
 private:
-    int gobanSize;
+    int gobanSize = 19;
   
     /**	\fn vector<lineGrp> grpLines(vector<Vec2f>)
      * 	\brief Sort lines in group according to their global orientation
