@@ -13,6 +13,7 @@
 #define CORE_HPP
 
 #include "opencv2/calib3d/calib3d.hpp"
+#include "opencv2/highgui/highgui.hpp"
 #include <aruco/aruco.h>
 
 #include "Camera.hpp"
@@ -37,6 +38,13 @@ struct lineGrp{
     std::vector<cv::Vec2f> lines;
     float anglMoy;
 };
+
+/** \fn void callBackFunc(int event, int x, int y, int flags, void* userdata)
+  *  \brief Function which goal is to catch clic envent on a 
+  * 	specific window and throw back Point whith coordinates in that window.
+  *  \arg Self explanatory
+  * **/
+void callBackFunc(int event, int x, int y, int flags, void* userdata);
 
 /** \class  rago::Core Core.hpp Core
   *
@@ -112,12 +120,19 @@ public:
 
 ///Main Core functions for the calibration of the camera/projector/goban
 
-    /** \fn void init()
+    /** \fn void initAuto()
       * \brief Initialization
       * Initialization before the detection.
-      * First the stone putted on the corners are read to get there coordinates in the camera system.
+      * Look for an existing goban and fill its coordinates.
     **/
     void initAuto();
+    
+    /** \fn void initMan()
+      * \brief Initialization
+      * Initialization before the detection.
+      * Ask the user to define the 4 corners of the board. 
+    **/
+    void initMan();
 
     /** \fn void detection()
       * \brief Detection by displaying markers
@@ -168,7 +183,8 @@ public:
     std::vector<cv::Point2f*> getList_corner_markers();
     
     int getGobanSize();
-
+  
+    
 private:
     int gobanSize = 19;
   
@@ -324,6 +340,10 @@ private:
     /**\brief Goban object of the project
     **/
     Goban* goban;
+    
+    
+    friend void callBackFunc(int event, int x, int y, int flags, void* userdata);
+  
 
 };
 

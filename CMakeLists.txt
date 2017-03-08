@@ -5,7 +5,7 @@ project (qGo)
 SET(CMAKE_MODULE_PATH /usr/local/lib/cmake/)
 
 # Répertoire d'installation de Qt5 (dépend de l'installation)
-SET(CMAKE_PREFIX_PATH "~/Qt/5.7/gcc_64/")
+SET(CMAKE_PREFIX_PATH "~/Qt/5.5/gcc/")
 
 find_package (OpenCV REQUIRED)
 find_package (aruco REQUIRED)

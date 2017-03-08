@@ -102,6 +102,10 @@ void RAGoWidget::startCalib()
   {
     core->initAuto();
   }
+  else
+  {
+    core->initMan();
+  }
   
   ui->checkConfig->setEnabled(true);
   phase=calibCameraEnd;

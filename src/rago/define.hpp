@@ -101,5 +101,6 @@
 #define WINDOW_PROJECTOR "Affichage projecteur"
 #define WINDOW_VERBOSE "Mode verbose"
 #define WINDOW_VG "VirtualGoban"
+#define WINDOW_CALIB "Calibration"
 
 

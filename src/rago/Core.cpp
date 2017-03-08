@@ -22,14 +22,25 @@ using namespace aruco;
 using namespace cv;
 using namespace std;
 
+Core* refCore;
 
 #ifdef COMP_MOD_VERBOSE
 Mat verbose;
 #endif // COMP_MOD_VERBOSE
 
 
+void rago::callBackFunc(int event, int x, int y, int flags, void* userdata)
+{
+    if(event==CV_EVENT_LBUTTONDOWN)
+    {
+      refCore->list_corner_markers.push_back(new Point2f(x,y));
+    }
+}
+
 Core::Core(Camera* camera, Projector* proj, Goban* goban)
 {
+    refCore=this;
+    
     ///Setting the RAGo objects
     this->camera = camera;
     this->proj = proj;
@@ -369,6 +380,29 @@ void Core::initAuto()
 
 #endif // COMP_MOD_NO_INIT
 }
+
+void Core::initMan()
+{
+    Mat im;
+    
+    im=camera->getFrame();
+    
+    list_corner_markers.clear();
+    
+    namedWindow(WINDOW_CALIB, CV_WINDOW_FREERATIO );
+    setMouseCallback(WINDOW_CALIB,callBackFunc,NULL);
+    imshow(WINDOW_CALIB,im);
+    
+    while(list_corner_markers.size()<4)
+    {
+	waitKey(10);
+    }
+    
+    list_corner_markers=reorderPoints(list_corner_markers);
+    
+    waitKey(10);
+}
+
 
 void Core::detection()
 {
@@ -1001,4 +1035,3 @@ int Core::getGobanSize()
 {
   return gobanSize; 
 }
-
