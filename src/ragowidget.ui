@@ -14,6 +14,9 @@
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="sizeConstraint">
+    <enum>QLayout::SetNoConstraint</enum>
+   </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
@@ -56,145 +59,285 @@
      <property name="frameShape">
       <enum>QFrame::Box</enum>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_8">
+     <layout class="QVBoxLayout" name="verticalLayout_7">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_7">
-        <item>
-         <widget class="QGroupBox" name="groupBox">
-          <property name="title">
-           <string>Calibration</string>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_2">
-           <item>
-            <widget class="QWidget" name="widget" native="true">
-             <layout class="QHBoxLayout" name="horizontalLayout_6">
-              <item>
-               <widget class="QGroupBox" name="groupBox_2">
-                <property name="title">
-                 <string>Méthode</string>
-                </property>
-                <layout class="QVBoxLayout" name="verticalLayout_4">
-                 <item>
-                  <widget class="QRadioButton" name="radioButton_calibAuto">
-                   <property name="text">
-                    <string>Automatique</string>
-                   </property>
-                   <property name="checked">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QRadioButton" name="radioButton_calibManu">
-                   <property name="text">
-                    <string>Manuelle</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QRadioButton" name="radioButton_calibPierre">
-                   <property name="enabled">
-                    <bool>false</bool>
-                   </property>
-                   <property name="text">
-                    <string>Via la pose de pierres</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-              <item>
-               <spacer name="horizontalSpacer_7">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QLabel" name="label">
-                <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Instructions&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer name="horizontalSpacer_3">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="buttonCalib">
-             <property name="text">
-              <string>Lancer la calibration</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QWidget" name="checkConfig" native="true">
-             <layout class="QHBoxLayout" name="horizontalLayout_4">
-              <item>
-               <spacer name="horizontalSpacer_4">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_3">
-                <property name="text">
-                 <string>Cette configuration est-elle correcte ?</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="buttonCalibY">
-                <property name="text">
-                 <string>Oui</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="buttonCalibN">
-                <property name="text">
-                 <string>Non</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QWidget" name="beforeCalib" native="true">
-          <layout class="QHBoxLayout" name="horizontalLayout_3">
-           <item>
-            <spacer name="horizontalSpacer_2">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Instructions&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="widget" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QWidget" name="beforeCalib" native="true">
+           <layout class="QVBoxLayout" name="verticalLayout_8">
+            <item>
+             <widget class="QGroupBox" name="horizontalGroupBox">
+              <property name="title">
+               <string>Paramètres</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_3">
+               <item>
+                <widget class="QGroupBox" name="verticalGroupBox">
+                 <property name="title">
+                  <string>Caméra</string>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_5">
+                  <item>
+                   <widget class="QPushButton" name="changeCam">
+                    <property name="text">
+                     <string>Changer de caméra</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_2">
+                    <item>
+                     <widget class="QLabel" name="label_4">
+                      <property name="text">
+                       <string>Zoom : </string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QSlider" name="zoomSlider">
+                      <property name="minimum">
+                       <number>10</number>
+                      </property>
+                      <property name="maximum">
+                       <number>50</number>
+                      </property>
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="zoomLabel">
+                      <property name="text">
+                       <string>1</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <widget class="QGroupBox" name="verticalGroupBox">
+                 <property name="title">
+                  <string>Projecteur</string>
+                 </property>
+                 <property name="flat">
+                  <bool>false</bool>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_6">
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_5">
+                    <item>
+                     <widget class="QLabel" name="label_2">
+                      <property name="text">
+                       <string>Luminosité : </string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QSlider" name="lumSlider">
+                      <property name="maximum">
+                       <number>100</number>
+                      </property>
+                      <property name="singleStep">
+                       <number>1</number>
+                      </property>
+                      <property name="value">
+                       <number>100</number>
+                      </property>
+                      <property name="sliderPosition">
+                       <number>100</number>
+                      </property>
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="lumLabel">
+                      <property name="text">
+                       <string>1</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox">
+              <property name="title">
+               <string>Calibration</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_2">
+               <item>
+                <widget class="QWidget" name="widget" native="true">
+                 <layout class="QHBoxLayout" name="horizontalLayout_6">
+                  <item>
+                   <widget class="QGroupBox" name="groupBox_2">
+                    <property name="title">
+                     <string>Méthode</string>
+                    </property>
+                    <layout class="QVBoxLayout" name="verticalLayout_4">
+                     <item>
+                      <widget class="QRadioButton" name="radioButton_calibAuto">
+                       <property name="text">
+                        <string>Automatique</string>
+                       </property>
+                       <property name="checked">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QRadioButton" name="radioButton_calibManu">
+                       <property name="text">
+                        <string>Manuelle</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QRadioButton" name="radioButton_calibPierre">
+                       <property name="enabled">
+                        <bool>false</bool>
+                       </property>
+                       <property name="text">
+                        <string>Via la pose de pierres</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="buttonCalib">
+                 <property name="text">
+                  <string>Lancer la calibration</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="verticalSpacer_3">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QWidget" name="checkConfig" native="true">
+                 <layout class="QHBoxLayout" name="horizontalLayout_4">
+                  <item>
+                   <spacer name="horizontalSpacer_4">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_3">
+                    <property name="text">
+                     <string>Cette configuration est-elle correcte ?</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="buttonCalibY">
+                    <property name="text">
+                     <string>Oui</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="buttonCalibN">
+                    <property name="text">
+                     <string>Non</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <spacer name="verticalSpacer_5">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <layout class="QGridLayout" name="gridLayout_3">
+           <item row="1" column="0">
+            <spacer name="horizontalSpacer_6">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -206,185 +349,56 @@
              </property>
             </spacer>
            </item>
-           <item>
-            <widget class="QFrame" name="horizontalFrame">
-             <layout class="QVBoxLayout" name="verticalLayout_3">
-              <item>
-               <widget class="QGroupBox" name="verticalGroupBox">
-                <property name="title">
-                 <string>Paramètres de caméra</string>
-                </property>
-                <layout class="QVBoxLayout" name="verticalLayout_5">
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_2">
-                   <item>
-                    <widget class="QLabel" name="label_4">
-                     <property name="text">
-                      <string>Zoom : </string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QSlider" name="zoomSlider">
-                     <property name="minimum">
-                      <number>10</number>
-                     </property>
-                     <property name="maximum">
-                      <number>50</number>
-                     </property>
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLabel" name="zoomLabel">
-                     <property name="text">
-                      <string>1</string>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="changeCam">
-                   <property name="text">
-                    <string>Changer de caméra</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-              <item>
-               <spacer name="verticalSpacer">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>20</width>
-                  <height>40</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QGroupBox" name="verticalGroupBox">
-                <property name="title">
-                 <string>Paramètres de projecteur</string>
-                </property>
-                <layout class="QVBoxLayout" name="verticalLayout_6">
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_5">
-                   <item>
-                    <widget class="QLabel" name="label_2">
-                     <property name="text">
-                      <string>Luminosité : </string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QSlider" name="lumSlider">
-                     <property name="maximum">
-                      <number>100</number>
-                     </property>
-                     <property name="singleStep">
-                      <number>1</number>
-                     </property>
-                     <property name="value">
-                      <number>100</number>
-                     </property>
-                     <property name="sliderPosition">
-                      <number>100</number>
-                     </property>
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLabel" name="lumLabel">
-                     <property name="text">
-                      <string>1</string>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-             </layout>
+           <item row="1" column="1">
+            <widget class="QLabel" name="labelFrame">
+             <property name="text">
+              <string/>
+             </property>
             </widget>
            </item>
+           <item row="0" column="1">
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="2" column="1">
+            <spacer name="verticalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="1" column="2">
+            <spacer name="horizontalSpacer_5">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
           </layout>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QGridLayout" name="gridLayout_3">
-        <item row="1" column="0">
-         <spacer name="horizontalSpacer_6">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLabel" name="labelFrame">
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <spacer name="verticalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="2" column="1">
-         <spacer name="verticalSpacer_4">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="1" column="2">
-         <spacer name="horizontalSpacer_5">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
+         </item>
+        </layout>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -395,7 +409,7 @@
  <connections>
   <connection>
    <sender>checkBox</sender>
-   <signal>clicked(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>verticalFrame</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>

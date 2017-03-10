@@ -59,7 +59,7 @@ public:
     void detachBoard(qGoBoard*);
 
 public slots:
-  void activateRAGo(int);
+  void activateRAGo(bool);
   void changeCam();
   void startCalib();
   void updateFrame();

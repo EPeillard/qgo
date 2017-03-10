@@ -23,7 +23,7 @@ RAGoWidget::RAGoWidget(QWidget *parent) :
     connect(timer, SIGNAL(timeout()), this, SLOT(updateFrame())); 
     connect(timer, SIGNAL(timeout()), this, SLOT(searchNewMove()));
     
-    connect(ui->checkBox,SIGNAL(stateChanged(int)),this,SLOT(activateRAGo(int)));
+    connect(ui->checkBox,SIGNAL(clicked(bool)),this,SLOT(activateRAGo(bool)));
     connect(ui->changeCam,SIGNAL(pressed()),this,SLOT(changeCam()));
     connect(ui->buttonCalib,SIGNAL(pressed()),this,SLOT(startCalib()));
     connect(ui->buttonCalibY, SIGNAL(pressed()), this, SLOT(goodCalib())); 
@@ -38,9 +38,9 @@ RAGoWidget::~RAGoWidget()
     delete ui;
 }
 
-void RAGoWidget::activateRAGo(int state)
+void RAGoWidget::activateRAGo(bool checked)
 {
-  if(state==Qt::Checked)
+  if(checked)
   {
     ui->errorLabel->setText("Initialisation ...");
     qApp->processEvents();
@@ -61,13 +61,22 @@ void RAGoWidget::activateRAGo(int state)
       phase=waitCalib; 
       ui->checkConfig->setEnabled(false);
     }
-    catch(exception)
+    catch(runtime_error e)
     {
       ui->errorLabel->setText("Pas de caméra détectée");
+      qDebug()<<e.what();
       ui->checkBox->setCheckState(Qt::Unchecked);
       
       phase=disabled; 
-    } 
+    }
+    catch(exception e)
+    {
+      ui->errorLabel->setText("Erreur inconnue");
+      qDebug()<<e.what();
+      ui->checkBox->setCheckState(Qt::Unchecked);
+      
+      phase=disabled; 
+    }
   }
   else
   {
